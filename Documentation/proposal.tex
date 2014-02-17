@@ -88,32 +88,40 @@ The application will use data from Tri-Met's database. (Tri-Met is a
 the public transit system in Portland, Oregon). The database contains
 route information for all of Tri-Met's trains and buses.
 
+This proposal implies a joint project to be developed by Robert Konell and
+Blake Wellington. We recognize that the intent of the CS457 project is to
+have student work individually. However, we believe that, by working together,
+we can accomplish a greater level of sophistication in the end product.
+Each student has skills and interests that can be leveraged to complete
+a more robust application with a richer user experience.
+
 Since we are new to Haskell and have limited time to work on this project,
 we have broken the project down into manageable, intermediate goals.
 
-\section{Project Goals}
+\section*{Project Goals}
 The aim of this project is to use the Haskell programming language to 
 create a web-based application. It is intended as a learning exercise
 with the following project goals:
 
-* Learn functional programming with Haskell
-* Learn how to use a REST API as a web service
-* Learn how to use Haskell libraries to present the data
-  in a meaningful way
+\begin{itemize}
+\item Learn functional programming with Haskell
+\item Learn how to use a REST API as a web service
+\item Learn how to use Haskell libraries to present the data in a meaningful way
+\end{itemize}
   
-\subsection{Initial Goal}
+\subsection*{Initial Goal}
 The initial goal of the project is to successfully pull a single, small
 piece of information from the database, massage it in Haskell, and present
 it on a web page. This may be something as basic as showing the next bus/train
 to arrive at a given stop number.
 
-\subsection{Secondary Goal}
+\subsection*{Secondary Goal}
 Once the initial goal is in place, we will expand the user interface to contain
 ever more complex query abilities.  For example, we might add the ability to 
 select a certain route, list the stops of a route, estimate the travel time
 between two stops, plan a trip (including multiple transfers), etc.
 
-\subsection{Final Goal}
+\subsection*{Final Goal}
 Since this is a web-based application, it would be nice to have it hosted on
 a public server. The final goal is to be able to pack all the code up and 
 install it on a server in the cloud (such as Amazon EC2). This will involve
@@ -133,7 +141,7 @@ This includes using graphical libraries and/or HTML wrapper libraries for the
 front end, and calls to an exposed web API for the backend. The final user
 interface will be presented on a web page using HTML (and possibly some Javascript).
 
-\section*{Project}
+\section*{Technology}
 A Trimet application wrapper to make use of Trimet's public web API's.
 And example use case would be to submit a stop ID, and get back arrival times.
 
