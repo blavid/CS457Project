@@ -1,0 +1,100 @@
+% Author: Robert Konell
+% Author: Blake Wellington
+
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{tikz-er2}
+%\usepackage{enumitem}
+\usepackage{enumerate}
+%\usepackage[LGRgreek]{mathastext}
+%\usepackage{txfonts}
+%\usepackage{siunitx}
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{ifthen}
+%\usepackage{xstring}
+%\usepackage{pgfopts}
+%\usepackage{tikz-qtree}
+\usepackage{calc}
+%\usepackage{tikz-uml}
+%\usepackage{ulem}
+%\usepackage{listings}
+%\usepackage{pstricks,pst-uml,pstricks-add}
+%\usepackage{pgffor}
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{polar}
+%\usepgflibrary{shapes.geometric}
+%\usepackage{fp}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+%\usetikzlibrary{arrows,automata,positioning,calc}
+%\tikzstyle{vertex}=[draw,fill=black!15,circle,minimum size=18pt,inner sep=0pt]
+%\pgfplotsset{my style/.append style={axis x line=middle, axis y line=middle, xlabel={$x$}, ylabel={$y$}, axis equal }}
+%\renewcommand{\algorithmiccomment}[1]{\hskip2em$\triangleright$ #1}
+
+
+
+%\newcommand{\sim}{\textasciitilde }
+\newcommand{\conj}{\;\&\;}
+\newcommand{\disj}{\; \vee \;}
+\newcommand{\ntilde}{_{\widetilde{~}}}
+\newcommand{\dntilde}{_{\widetilde{~}\, \widetilde{~}}}
+\newcommand{\ob}{\\ {\bfseries O}}
+\newcommand{\cb}{\\ {\bfseries X}}
+\newcommand{\subspace}{\hspace*{4em}}
+
+
+\tikzstyle{every entity} = [top color=white, bottom color=blue!30, 
+                            draw=blue!50!black!100, drop shadow]
+\tikzstyle{every weak entity} = [drop shadow={shadow xshift=.7ex, 
+                                 shadow yshift=-.7ex}]
+\tikzstyle{every attribute} = [top color=white, bottom color=yellow!20, 
+                               draw=yellow, node distance=1cm, drop shadow]
+\tikzstyle{every relationship} = [top color=white, bottom color=red!20, 
+                                  draw=red!50!black!100, drop shadow]
+\tikzstyle{every weak relationship} = [drop shadow={shadow xshift=.7ex, 
+																				shadow yshift=-.7ex}]
+\tikzstyle{every isa} = [top color=white, bottom color=green!20, 
+                         draw=green!50!black!100, drop shadow]
+
+\usepackage[letterpaper,
+            left=3cm,right=3cm,
+            top=3cm,bottom=3cm]{geometry}
+
+\lhead{CS457}
+\rhead{Project Proposal}
+\chead{}                                % central header
+\cfoot{}                                   % central footer (cleared)
+\rfoot{Konell,Wellington \itshape \thepage}                       % right footer
+
+\title{Project Proposal}
+\author{Robert Konell, Blake Wellington}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\pagestyle{fancy}
+
+\section*{Summary}
+
+\section*{Project Motivation} 
+Use Haskell and associated libraries to create an integrated piece of 'real world' like software.  Graphical libraries for the front end, and web calls to an exposed web API for the backend.
+
+\section*{Project}
+A Trimet application wrapper to make use of Trimet's public web API's.
+And example use case would be to submit a stop ID, and get back arrival times.
+
+Gtk2HS is a haskell wrapper over the gtk+2.x library for creating user interfaces.
+
+\section*{Previous experience}
+Niether student has experience with user interfaces besides very mild use of the Java Swing API.  Niether student has experience interacting with web API's.  Both of these reasons are further motivation for the project.
+
+\end{document} 
