@@ -141,13 +141,52 @@ This includes using graphical libraries and/or HTML wrapper libraries for the
 front end, and calls to an exposed web API for the backend. The final user
 interface will be presented on a web page using HTML (and possibly some Javascript).
 
-\section*{Technology}
-A Trimet application wrapper to make use of Trimet's public web API's.
-And example use case would be to submit a stop ID, and get back arrival times.
+\section*{Collaboration Plan}
+A git repository hosted on Github (https://github.com/blakewellington/cs457project) 
+will be used.  One benefit of using Github is that it will provide a public way
+for each students work to be individually tracked.  
 
-Gtk2HS is a haskell wrapper over the gtk+2.x library for creating user interfaces.
+In the first week a high-level architecture will be designed, with modules and 
+their sub-tasks identified and broken down into manageable chunks.  Each student
+will take ownership of certain tasks, but not entire modules, that way both 
+students will have a hand in every part of the project.  
 
-\section*{Previous experience}
-Niether student has experience with user interfaces besides very mild use of the Java Swing API.  Niether student has experience interacting with web API's.  Both of these reasons are further motivation for the project.
+Occasional pair programming will be utilized as time allows.
+
+\section*{Schedule: }
+\subsubsection*{Week of Feb 17th:}
+High level design, discussion of major modules, identification of bite sized tasks.
+
+Research and analyze Trimet web API.
+
+Research and analyze web server options.
+
+\subsubsction*{Week of Feb 24th:}
+Functions to call selected Trimet API created.
+
+Work begins to parse responses, including design of data types to hold parsed data.
+
+Web server option chosen, work begins on having server accept GET and response
+with Haskell generated minimal HTTP page.
+
+\subsubsection*{Week of March 3rd:}
+Parser is working.
+
+A complete cycle of: HTTP Get, haskell calls API, parse response, generate page and respond
+
+For at least 1 API function.  
+
+Work begins on designing the front end more with a complete cycle complete.
+
+\subsubsection*{Week of March 10th:}
+More functions created, for more complex querys.
+
+Heavy work on the front end/HTML in order to make it robust enough to use backend.
+
+Begin cleaning up code by end of week.
+
+Work begins on final paper.
+\subsubsection*{Week of March 17th:}
+Final touhes are made.  Paper turned in.  Celebration ensues.
 
 \end{document} 
