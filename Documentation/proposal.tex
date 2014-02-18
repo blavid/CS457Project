@@ -128,7 +128,6 @@ install it on a server in the cloud (such as Amazon EC2). This will involve
 installing Haskell (or just shipping the compiled version) on a server 
 equipped with Apache web server.
 
-
 \section*{Project Motivation} 
 The authors of this application are Computer Science students at Portland
 State University. We are relatively new to programming and would like to gain
@@ -144,7 +143,7 @@ interface will be presented on a web page using HTML (and possibly some Javascri
 \section*{Collaboration Plan}
 A git repository hosted on Github (https://github.com/blakewellington/cs457project) 
 will be used.  One benefit of using Github is that it will provide a public way
-for each students work to be individually tracked.  
+for each student's work to be individually tracked.  
 
 In the first week a high-level architecture will be designed, with modules and 
 their sub-tasks identified and broken down into manageable chunks.  Each student
@@ -153,40 +152,42 @@ students will have a hand in every part of the project.
 
 Occasional pair programming will be utilized as time allows.
 
-\section*{Schedule: }
+\section*{Schedule:}
+
 \subsubsection*{Week of Feb 17th:}
-High level design, discussion of major modules, identification of bite sized tasks.
+\begin{itemize}
+\item High level design, discussion of major modules, identification of bite sized tasks.
+\item Research and analyze Trimet web API.
+\item Research and analyze web server options.
+\end{itemize}
 
-Research and analyze Trimet web API.
-
-Research and analyze web server options.
-
-\subsubsction*{Week of Feb 24th:}
-Functions to call selected Trimet API created.
-
-Work begins to parse responses, including design of data types to hold parsed data.
-
-Web server option chosen, work begins on having server accept GET and response
+\subsubsection*{Week of Feb 24th:}
+\begin{itemize}
+\item Functions to call Trimet API created.
+\item Work begins to parse responses, including design of data types to hold parsed data.
+\item Web server option chosen, work begins on having server accept GET and response
 with Haskell generated minimal HTTP page.
+\end{itemize}
 
 \subsubsection*{Week of March 3rd:}
-Parser is working.
-
-A complete cycle of: HTTP Get, haskell calls API, parse response, generate page and respond
-
-For at least 1 API function.  
-
-Work begins on designing the front end more with a complete cycle complete.
+\begin{itemize}
+\item Parser is working.
+\item A complete cycle of: HTTP Get, haskell calls API, parse response, generate page and respond
+\item For at least 1 API function.  
+\item Work begins on designing the front end more with a complete cycle complete.
+\end{itemize}
 
 \subsubsection*{Week of March 10th:}
-More functions created, for more complex querys.
+\begin{itemize}
+\item More functions created for more complex queries.
+\item Heavy work on the front end/HTML in order to make it robust enough to use backend.
+\item Begin cleaning up code by end of week.
+\item Work begins on final paper.
+\end{itemize}
 
-Heavy work on the front end/HTML in order to make it robust enough to use backend.
-
-Begin cleaning up code by end of week.
-
-Work begins on final paper.
 \subsubsection*{Week of March 17th:}
-Final touhes are made.  Paper turned in.  Celebration ensues.
+\begin{itemize}
+\item Final touches are made.  Paper turned in.  Celebration ensues.
+\end{itemize}
 
 \end{document} 

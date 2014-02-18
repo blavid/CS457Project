@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.4.7)  16 FEB 2014 21:57
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.4.7)  17 FEB 2014 17:52
 entering extended mode
 **proposal.tex
 
@@ -569,26 +569,27 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 107.
  [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
-] [2]
+] [2] [3]
 ("C:\Users\blake\Dropbox\School\2014-Winter PSU\CS457 Func Langs\CS457Project\D
 ocumentation\proposal.aux") ) 
 Here is how much of TeX's memory you used:
- 11236 strings out of 494045
- 206021 string characters out of 3148388
- 257691 words of memory out of 3000000
- 14282 multiletter control sequences out of 15000+200000
- 12304 words of font info for 45 fonts, out of 3000000 for 9000
+ 11238 strings out of 494045
+ 206042 string characters out of 3148388
+ 258691 words of memory out of 3000000
+ 14283 multiletter control sequences out of 15000+200000
+ 12612 words of font info for 46 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 56i,11n,69p,418b,257s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 56i,11n,69p,418b,278s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on proposal.pdf (2 pages, 77258 bytes).
+sfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on proposal.pdf (3 pages, 91600 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
+ 59 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  109 words of extra memory for PDF output out of 10000 (max. 10000000)
 
