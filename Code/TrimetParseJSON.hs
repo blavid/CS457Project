@@ -17,6 +17,11 @@ arrivalURL id  = (baseURL ++ "locIDs/" ++ id ++ "/")
 getJSON :: IO B.ByteString
 getJSON = simpleHttp (arrivalURL "9843")
 
+main :: IO ()
+main = do json <- getJSON
+          putStrLn (show (decode json :: (Maybe Value)))
+          
+
 -- Define a datatype for a bus line/route
 data Arrival =
   Arrival {	detour	:: !Bool,
