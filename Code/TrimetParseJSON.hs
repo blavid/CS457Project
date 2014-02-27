@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
+module TrimetParseJSON where
 
 import Data.Aeson
 import Data.Text
@@ -14,12 +15,12 @@ baseURL = "http://developer.trimet.org/ws/V1/arrivals/appID/3B5489BFA2CDF3D57115
 arrivalURL :: String -> String
 arrivalURL id  = (baseURL ++ "locIDs/" ++ id ++ "/")
 
-getJSON :: IO B.ByteString
-getJSON = simpleHttp (arrivalURL "9843")
+getJSON :: String -> IO B.ByteString
+getJSON s = simpleHttp (arrivalURL s)
 
-main :: IO ()
-main = do json <- getJSON
-          putStrLn (show (decode json :: (Maybe Value)))
+-- main :: IO()
+-- main = do json <- getJSON
+--           putStrLn (show (decode json :: (Maybe Value)))
           
 
 -- Define a datatype for a bus line/route
