@@ -15,5 +15,5 @@ baseURL = "http://developer.trimet.org/ws/V1/arrivals/appID/3B5489BFA2CDF3D57115
 arrivalURL :: String -> String
 arrivalURL id  = (baseURL ++ "locIDs/" ++ id ++ "/")
 
-getArrival  :: String -> IO B.ByteString
-getArrival s = simpleHttp (arrivalURL s)
+getArrivals  :: String -> IO B.ByteString
+getArrivals s = simpleHttp (arrivalURL s)
