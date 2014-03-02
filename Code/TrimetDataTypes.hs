@@ -17,17 +17,19 @@ import System.IO.Unsafe
 --   queryTime
 
 -- Data Type Definitions and FromJSON Instance Definitions ---------------------
-{-
+
 data ResultSet
-     = ResultSet     { queryTime    :: String
+     = ResultSet     { locations    :: LocationList
+                      ,queryTime    :: String
                      } deriving Show
 
 instance FromJSON ResultSet where
-  parseJSON (Object o) =
-    ResultSet <$> ((o .: "resultSet") >>= (.: "queryTime"))
+  parseJSON (Object o) = ResultSet <$> 
+                         ((o .: "resultSet") >>= (.: "location"))
+                     <*> ((o .: "resultSet") >>= (.: "queryTime"))
   parseJSON _ = mzero
 
--}
+{-
 data ResultSet
      = ResultSet     { locations    :: LocationList
                       ,arrivals     :: ArrivalList
@@ -40,7 +42,7 @@ instance FromJSON ResultSet where
               <*> ((o .: "resultSet") >>= (.: "arrival"))
               <*> ((o .: "resultSet") >>= (.: "queryTime"))
   parseJSON _ = mzero
-
+-}
 
 data TripList        = TripList     {triplist     :: [Trip]}     deriving Show
 
@@ -49,19 +51,13 @@ instance FromJSON TripList where
     TripList <$> (o .: "trip")
   parseJSON _ = mzero
 
-data LocationList    = LocationList {locationList :: [Location]} deriving Show
+--data LocationList    = LocationList {locationList :: [Location]} deriving Show
+newtype LocationList    = LocationList [Location] deriving Show
 
 instance FromJSON LocationList where
   parseJSON (Object o) =
     LocationList <$> (o .: "location")
-  parseJSON _ = mzero
-
-data ArrivalList     = ArrivalList  {arrivalList  :: [Arrival]}  deriving Show
-
-instance FromJSON ArrivalList where
-  parseJSON (Object o) =
---    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
-    ArrivalList <$>  (o .: "arrival")
+--    LocationList <$> ((o.: "resultSet") >>= (.: "location"))
   parseJSON _ = mzero
 
 data Location
@@ -79,6 +75,21 @@ instance FromJSON Location where
               <*> (o .: "dir")
               <*> (o .: "lng")
               <*> (o .: "lat")
+{-
+    Location <$> ((o .: "resultSet") >>= (.: "location") >>= (.: "desc"))
+              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "locid"))
+              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "dir"))
+              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "lng"))
+              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "lat"))
+-}
+  parseJSON _ = mzero
+
+data ArrivalList     = ArrivalList  {arrivalList  :: [Arrival]}  deriving Show
+
+instance FromJSON ArrivalList where
+  parseJSON (Object o) =
+--    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
+    ArrivalList <$>  (o .: "arrival")
   parseJSON _ = mzero
 
 data Arrival
