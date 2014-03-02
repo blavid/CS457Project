@@ -10,37 +10,32 @@ import GHC.Generics
 import Foreign.Marshal.Unsafe
 import System.IO.Unsafe
 
-
---newtype LocationList = LocationList [Location]
---newtype ArrivalList  = ArrivalList [Arrival]
---newtype TripList     = TripList [Trip]
 data TripList        = TripList     {triplist     :: [Trip]}     deriving Show
 data LocationList    = LocationList {locationList :: [Location]} deriving Show
 data ArrivalList     = ArrivalList  {arrivalList  :: [Arrival]}  deriving Show
 
 data ResultSet
-     = ResultSet     { 
--- locationList :: LocationList
--- arrivalList  :: ArrivalList
-                      queryTime    :: Text
+     = ResultSet     { locations    :: LocationList
+                      ,arrivals     :: ArrivalList
+                      ,queryTime    :: Text
                      } deriving Show
   
 data Location
-     = Location      { desc           :: Text
-                      ,locid          :: Int
-                      ,dir            :: Text
-                      ,lng            :: Double
-                      ,lat            :: Double
+     = Location      { loc_desc           :: Text
+                      ,loc_locid          :: Int
+                      ,loc_dir            :: Text
+                      ,loc_lng            :: Double
+                      ,loc_lat            :: Double
                      } deriving Show
 
 data Arrival
-     = Arrival       { detour         :: Bool
-                      ,status         :: Text
---                      ,locid          :: Int
-                      ,block          :: Int
-                      ,scheduled      :: Text
-                      ,shortSign      :: Text
---                      ,dir            :: Int
+     = Arrival       { arr_detour         :: Bool
+                      ,arr_status         :: Text
+                      ,arr_locid          :: Int
+                      ,arr_block          :: Int
+                      ,arr_scheduled      :: Text
+                      ,arr_shortSign      :: Text
+                      ,arr_dir            :: Int
                       ,estimated      :: Text
                       ,route          :: Int
                       ,departed       :: Bool
@@ -50,22 +45,22 @@ data Arrival
                      } deriving Show
                           
 data BlockPosition  
-     = BlockPosition { at                 :: Text
-                      ,feet               :: Int
---                      ,lng                :: Double
-                      ,trip               :: Trip
---                      ,lat                :: Double
-                      ,heading            :: Int 
+     = BlockPosition { bp_at                 :: Text
+                      ,bp_feet               :: Int
+                      ,bp_lng                :: Double
+                      ,bp_trip               :: Trip
+                      ,bp_lat                :: Double
+                      ,bp_heading            :: Int 
                       } deriving Show
 
 data Trip           
-     = Trip          { progress      :: Int
---                      ,desc          :: Text
-                      ,pattern       :: Int
---                      ,dir           :: Int
---                      ,route         :: Int
-                      ,tripNum       :: Int
-                      ,destDist      :: Int
+     = Trip          { trip_progress      :: Int
+                      ,trip_desc          :: Text
+                      ,trip_pattern       :: Int
+                      ,trip_dir           :: Int
+                      ,trip_route         :: Int
+                      ,trip_tripNum       :: Int
+                      ,trip_destDist      :: Int
                      } deriving Show
 
 baseURL :: String
@@ -84,7 +79,8 @@ main :: IO()
 main = do 
        json <- getJSON stopID
        putStrLn (show (decode json :: (Maybe Value)))
-       putStrLn (show (decode json :: (Maybe ResultSet)))
+       putStrLn (show (decode json :: Maybe ResultSet))
+       
 
 instance FromJSON TripList where
   parseJSON (Object o) =
@@ -94,12 +90,67 @@ instance FromJSON TripList where
 instance FromJSON Trip where
   parseJSON (Object o) =
     Trip <$> (o .: "progress")
+         <*> (o .: "desc")
          <*> (o .: "pattern")
+         <*> (o .: "dir")
+         <*> (o .: "route")
          <*> (o .: "tripNum")
          <*> (o .: "destDist")
   parseJSON _ = mzero
 
+-- TODO: Make ArrivalList
+-- This has to have all the fields in arrival
+-- I don't know what it will look like.
+
+instance FromJSON ArrivalList where
+  parseJSON (Object o) =
+    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
+  parseJSON _ = mzero
+
+instance FromJSON Arrival where
+  parseJSON (Object o) =
+    Arrival <$> (o .: "detour")
+            <*> (o .: "status")
+            <*> (o .: "locid")
+            <*> (o .: "block")
+            <*> (o .: "scheduled")
+            <*> (o .: "shortSign")
+            <*> (o .: "dir")
+            <*> (o .: "estimated")
+            <*> (o .: "route")
+            <*> (o .: "departed")
+            <*> (o .: "blockPosition")
+            <*> (o .: "fullSign")
+            <*> (o .: "piece")
+  parseJSON _ = mzero
+
+instance FromJSON LocationList where
+  parseJSON (Object o) =
+    LocationList <$> (o .: "location")
+  parseJSON _ = mzero
+
+instance FromJSON Location where
+  parseJSON (Object o) =
+    Location <$> (o .: "desc")
+              <*> (o .: "locid")
+              <*> (o .: "dir")
+              <*> (o .: "lng")
+              <*> (o .: "lat")
+  parseJSON _ = mzero
+
+instance FromJSON BlockPosition where
+  parseJSON (Object o) =
+    BlockPosition <$> (o .: "at")
+              <*> (o .: "feet")
+              <*> (o .: "lng")
+              <*> (o .: "trip")
+              <*> (o .: "lat")
+              <*> (o .: "heading")
+  parseJSON _ = mzero
+
 instance FromJSON ResultSet where
   parseJSON (Object o) =
-    ResultSet <$> ((o .: "resultSet") >>= (.: "queryTime"))
+    ResultSet <$> ((o .: "resultSet") >>= (.: "location"))
+              <*> ((o .: "resultSet") >>= (.: "arrival"))
+              <*> ((o .: "resultSet") >>= (.: "queryTime"))
   parseJSON _ = mzero
