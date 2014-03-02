@@ -17,11 +17,21 @@ import System.IO.Unsafe
 --   queryTime
 
 -- Data Type Definitions and FromJSON Instance Definitions ---------------------
+{-
+data ResultSet
+     = ResultSet     { queryTime    :: String
+                     } deriving Show
 
+instance FromJSON ResultSet where
+  parseJSON (Object o) =
+    ResultSet <$> ((o .: "resultSet") >>= (.: "queryTime"))
+  parseJSON _ = mzero
+
+-}
 data ResultSet
      = ResultSet     { locations    :: LocationList
                       ,arrivals     :: ArrivalList
-                      ,queryTime    :: Text
+                      ,queryTime    :: String
                      } deriving Show
 
 instance FromJSON ResultSet where
@@ -30,6 +40,7 @@ instance FromJSON ResultSet where
               <*> ((o .: "resultSet") >>= (.: "arrival"))
               <*> ((o .: "resultSet") >>= (.: "queryTime"))
   parseJSON _ = mzero
+
 
 data TripList        = TripList     {triplist     :: [Trip]}     deriving Show
 
@@ -49,13 +60,14 @@ data ArrivalList     = ArrivalList  {arrivalList  :: [Arrival]}  deriving Show
 
 instance FromJSON ArrivalList where
   parseJSON (Object o) =
-    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
+--    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
+    ArrivalList <$>  (o .: "arrival")
   parseJSON _ = mzero
 
 data Location
-     = Location      { loc_desc           :: Text
+     = Location      { loc_desc           :: String
                       ,loc_locid          :: Int
-                      ,loc_dir            :: Text
+                      ,loc_dir            :: String
                       ,loc_lng            :: Double
                       ,loc_lat            :: Double
                      } deriving Show
@@ -71,18 +83,18 @@ instance FromJSON Location where
 
 data Arrival
      = Arrival       { arr_detour         :: Bool
-                      ,arr_status         :: Text
+                      ,arr_status         :: String
                       ,arr_locid          :: Int
                       ,arr_block          :: Int
-                      ,arr_scheduled      :: Text
-                      ,arr_shortSign      :: Text
+                      ,arr_scheduled      :: String
+                      ,arr_shortSign      :: String
                       ,arr_dir            :: Int
-                      ,estimated      :: Text
+                      ,estimated      :: Maybe String
                       ,route          :: Int
                       ,departed       :: Bool
-                      ,blockPosition  :: BlockPosition
-                      ,fullSign       :: Text
-                      ,piece          :: Text
+                      ,blockPosition  :: Maybe BlockPosition
+                      ,fullSign       :: String
+                      ,piece          :: String
                      } deriving Show
 
 instance FromJSON Arrival where
@@ -94,16 +106,16 @@ instance FromJSON Arrival where
             <*> (o .: "scheduled")
             <*> (o .: "shortSign")
             <*> (o .: "dir")
-            <*> (o .: "estimated")
+            <*> (o .:? "estimated")
             <*> (o .: "route")
             <*> (o .: "departed")
-            <*> (o .: "blockPosition")
+            <*> (o .:? "blockPosition")
             <*> (o .: "fullSign")
             <*> (o .: "piece")
   parseJSON _ = mzero
 
 data BlockPosition  
-     = BlockPosition { bp_at                 :: Text
+     = BlockPosition { bp_at                 :: String
                       ,bp_feet               :: Int
                       ,bp_lng                :: Double
                       ,bp_trip               :: Trip
@@ -123,7 +135,7 @@ instance FromJSON BlockPosition where
 
 data Trip           
      = Trip          { trip_progress      :: Int
-                      ,trip_desc          :: Text
+                      ,trip_desc          :: String
                       ,trip_pattern       :: Int
                       ,trip_dir           :: Int
                       ,trip_route         :: Int
