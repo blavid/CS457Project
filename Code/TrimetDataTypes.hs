@@ -19,45 +19,17 @@ import System.IO.Unsafe
 -- Data Type Definitions and FromJSON Instance Definitions ---------------------
 
 data ResultSet
-     = ResultSet     { locations    :: LocationList
+     = ResultSet     { 
+                       locations    :: !Array
+                      ,arrivals     :: !Array
                       ,queryTime    :: String
                      } deriving Show
 
 instance FromJSON ResultSet where
   parseJSON (Object o) = ResultSet <$> 
                          ((o .: "resultSet") >>= (.: "location"))
+                     <*> ((o .: "resultSet") >>= (.: "arrival"))
                      <*> ((o .: "resultSet") >>= (.: "queryTime"))
-  parseJSON _ = mzero
-
-{-
-data ResultSet
-     = ResultSet     { locations    :: LocationList
-                      ,arrivals     :: ArrivalList
-                      ,queryTime    :: String
-                     } deriving Show
-
-instance FromJSON ResultSet where
-  parseJSON (Object o) =
-    ResultSet <$> ((o .: "resultSet") >>= (.: "location"))
-              <*> ((o .: "resultSet") >>= (.: "arrival"))
-              <*> ((o .: "resultSet") >>= (.: "queryTime"))
-  parseJSON _ = mzero
--}
-
-data TripList        = TripList     {triplist     :: [Trip]}     deriving Show
-
-instance FromJSON TripList where
-  parseJSON (Object o) =
-    TripList <$> (o .: "trip")
-  parseJSON _ = mzero
-
---data LocationList    = LocationList {locationList :: [Location]} deriving Show
-newtype LocationList    = LocationList [Location] deriving Show
-
-instance FromJSON LocationList where
-  parseJSON (Object o) =
-    LocationList <$> (o .: "location")
---    LocationList <$> ((o.: "resultSet") >>= (.: "location"))
   parseJSON _ = mzero
 
 data Location
@@ -75,21 +47,6 @@ instance FromJSON Location where
               <*> (o .: "dir")
               <*> (o .: "lng")
               <*> (o .: "lat")
-{-
-    Location <$> ((o .: "resultSet") >>= (.: "location") >>= (.: "desc"))
-              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "locid"))
-              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "dir"))
-              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "lng"))
-              <*> ((o .: "resultSet") >>= (.: "location") >>= (.: "lat"))
--}
-  parseJSON _ = mzero
-
-data ArrivalList     = ArrivalList  {arrivalList  :: [Arrival]}  deriving Show
-
-instance FromJSON ArrivalList where
-  parseJSON (Object o) =
---    ArrivalList <$>  ((o .: "resultSet") >>= (.: "arrival"))
-    ArrivalList <$>  (o .: "arrival")
   parseJSON _ = mzero
 
 data Arrival
@@ -103,7 +60,7 @@ data Arrival
                       ,estimated      :: Maybe String
                       ,route          :: Int
                       ,departed       :: Bool
-                      ,blockPosition  :: Maybe BlockPosition
+                      ,blockPosition  :: Maybe Value
                       ,fullSign       :: String
                       ,piece          :: String
                      } deriving Show
@@ -129,7 +86,7 @@ data BlockPosition
      = BlockPosition { bp_at                 :: String
                       ,bp_feet               :: Int
                       ,bp_lng                :: Double
-                      ,bp_trip               :: Trip
+                      ,bp_trip               :: !Array
                       ,bp_lat                :: Double
                       ,bp_heading            :: Int 
                       } deriving Show
@@ -165,10 +122,6 @@ instance FromJSON Trip where
          <*> (o .: "destDist")
   parseJSON _ = mzero
 
-
-
-
-
 baseURL :: String
 baseURL = "http://developer.trimet.org/ws/V1/arrivals/appID/3B5489BFA2CDF3D5711521B76/json/true/"
 
@@ -187,10 +140,14 @@ doSomething (Just u) = "Returned Something"
 
 main :: IO()
 main = do 
-       json <- getJSON stopID
-       putStrLn (show (decode json :: (Maybe Value)))
-       putStrLn (show (decode json :: Maybe ResultSet))
-       putStrLn (doSomething (decode json :: Maybe ResultSet))
+--       json <- getJSON stopID
+       d <- (eitherDecode <$> (getJSON stopID)) :: IO (Either String ResultSet)
+       case d of
+         Left err -> putStrLn ("Error: " ++ err)
+	 Right rs -> print rs
+--       putStrLn (show (decode json :: (Maybe Value)))
+--       putStrLn (show (decode json :: Maybe ResultSet))
+--       putStrLn (doSomething (decode json :: Maybe ResultSet))
        
 
 
