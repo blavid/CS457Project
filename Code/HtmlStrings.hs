@@ -23,7 +23,8 @@ htmlMeta = "<meta content='text/html;charset=utf-8' charset='UTF-8'>"
 textBox           :: Text -> Text -> Text
 textBox label id  = htmlGlue [label,": <input id='", id, "' type='text'><br>"] 
 
-arrivalsButton = "<button id='arrivalsButton' class='float-left submit-button' >Get Arrivals</button>"
+htmlButton          :: Text -> Text -> Text
+htmlButton label id = htmlGlue ["<button id='", id, "' class='float-left submit-button' >", label, "</button>"]
 
 arrivalsJS = "<script type='text/javascript'> document.getElementById('arrivalsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/arrivals/' + document.getElementById('arrivalsText').value + '/';    }; </script>"
 

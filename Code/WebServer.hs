@@ -11,31 +11,32 @@ import Data.ByteString.Lazy
 import Data.Text
 import qualified Data.ByteString                 as BS
 import Control.Monad
+import Control.Applicative
 import Data.Char
-import TrimetServiceFunctions
-import HtmlStrings
+import TrimetFunctions
+import TrimetDataTypes
+import HtmlBuilder
+import Data.Aeson
 import Foreign.Marshal.Unsafe
 
 instance ToMessage Text where
    toContentType _ = B.pack "text/html; charset=UTF-8"
    toMessage = LU.fromString.Data.Text.unpack
 
-data MyString = MyString String
-
-getStringFromMyString (MyString x) = x
-
 main :: IO ()
 main = do simpleHTTP nullConf $ msum [  Happstack.Server.dir "arrivalsPage" $ ok arrivalsMainPage
                                       , Happstack.Server.dir "arrivals" $ 
                                                                    path $ 
-                                                               \s -> ok $ 
-                                                       unsafeLocalState $ do json <- getArrivals s 
-                                                                             return (Data.Text.pack.bsToStr.Prelude.head $ toChunks json)
+                                                               \s -> ok $ arrivalsMatch s 
+                                      , Happstack.Server.dir "stopFinderPage" $ ok "woooot"
                                      ]
 
-arrivalPage        :: IO Text  -> IO Text
-arrivalPage innard = do innard' <- innard
-                        return $ htmlHead (htmlBody innard')
-                       
-bsToStr :: BS.ByteString -> String
-bsToStr = Prelude.map (chr . fromEnum) . BS.unpack 
+arrivalsMatch stopId = Data.Text.pack $ unsafeLocalState
+                     $ do json <- (eitherDecode <$> (getArrival stopId)) :: IO (Either String ResultSet)
+                          case json of
+                            Left err -> return ("Err: " ++ err)
+                            Right rs -> return (show rs)
+
+
+
+

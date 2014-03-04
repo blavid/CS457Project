@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
+module TrimetFunctions where
 
 import Data.Aeson
 import Control.Applicative
@@ -19,8 +20,8 @@ stopID   = "9843"
 arrivalURL :: String -> String
 arrivalURL id  = (baseURL ++ "locIDs/" ++ id ++ "/")
 
-getJSON :: String -> IO B.ByteString
-getJSON s = simpleHttp (arrivalURL s)
+getArrival :: String -> IO B.ByteString
+getArrival s = simpleHttp (arrivalURL s)
 
 {-
 doSomething :: IO (Either String ResultSet)
@@ -45,13 +46,13 @@ getQueryTime
 decodeResultSet :: B.ByteString -> Maybe ResultSet
 decodeResultSet response = decode response
 
-main :: IO()
+{-main :: IO()
 main = do 
-       d <- (eitherDecode <$> (getJSON stopID)) :: IO (Either String ResultSet)
+d <- (eitherDecode <$> (getJSON stopID)) :: IO (Either String ResultSet)
        case d of
          Left err -> putStrLn ("Error: " ++ err)
 	 Right rs -> do
-                       print (Prelude.map loc_desc (locations rs))
+                       print (show (locations rs))
 		       print (queryTime rs)
-		       print (Prelude.map blockPosition (arrivals rs))
-
+		       print (show (arrivals rs))
+-}
