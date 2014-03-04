@@ -8,6 +8,7 @@ import qualified Data.ByteString.Lazy as B
 import Network.HTTP.Conduit (simpleHttp)
 --import GHC.Generics
 import TrimetDataTypes as T
+import Foreign.Marshal.Unsafe
 
 baseURL :: String
 baseURL = "http://developer.trimet.org/ws/V1/arrivals/appID/3B5489BFA2CDF3D5711521B76/json/true/"
@@ -53,5 +54,4 @@ main = do
                        print (locations rs)
 		       print (queryTime rs)
 		       print (arrivals rs)
-
 

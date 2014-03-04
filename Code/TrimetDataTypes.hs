@@ -40,8 +40,8 @@ Full API documentation found at http://developer.trimet.org/ws_docs/
 
 data ResultSet
      = ResultSet     { 
-                       locations    :: !Array
-                      ,arrivals     :: !Array
+                       locations    :: [Location]
+                      ,arrivals     :: [Arrival]
                       ,queryTime    :: String
                      } deriving Show
 
@@ -106,7 +106,7 @@ data BlockPosition
      = BlockPosition { bp_at                 :: String
                       ,bp_feet               :: Int
                       ,bp_lng                :: Double
-                      ,bp_trip               :: !Array
+                      ,bp_trip               :: [Trip]
                       ,bp_lat                :: Double
                       ,bp_heading            :: Int 
                       } deriving Show
