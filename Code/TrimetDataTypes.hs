@@ -1,20 +1,40 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
+module TrimetDataTypes where
 
 import Data.Aeson
 import Control.Applicative
 import Data.Text
 import Control.Monad
-import qualified Data.ByteString.Lazy as B
-import Network.HTTP.Conduit (simpleHttp)
-import GHC.Generics
-import Foreign.Marshal.Unsafe
-import System.IO.Unsafe
 
--- Trimet returns a JSON response that contains a hierarchical dataset:
--- resultSet
---   LocationList
---   ArrivalList
---   queryTime
+{-
+Trimet returns a JSON response that contains a hierarchical dataset:
+  resultSet
+    LocationList [
+      desc
+      locid
+      dir
+      lng
+      lat ]
+    ArrivalList [
+      detour
+      status
+      locid
+      block
+      etc...
+      blockPosition [
+	at
+	feet
+	lng
+	trip [
+	  progress
+	  desc
+	  etc... ]
+	etc... ]
+    queryTime
+
+Full API documentation found at http://developer.trimet.org/ws_docs/
+
+-}
 
 -- Data Type Definitions and FromJSON Instance Definitions ---------------------
 
@@ -57,12 +77,12 @@ data Arrival
                       ,arr_scheduled      :: String
                       ,arr_shortSign      :: String
                       ,arr_dir            :: Int
-                      ,estimated      :: Maybe String
-                      ,route          :: Int
-                      ,departed       :: Bool
-                      ,blockPosition  :: Maybe Value
-                      ,fullSign       :: String
-                      ,piece          :: String
+                      ,estimated          :: Maybe String
+                      ,route              :: Int
+                      ,departed           :: Bool
+                      ,blockPosition      :: Maybe Value
+                      ,fullSign           :: String
+                      ,piece              :: String
                      } deriving Show
 
 instance FromJSON Arrival where
@@ -102,13 +122,13 @@ instance FromJSON BlockPosition where
   parseJSON _ = mzero
 
 data Trip           
-     = Trip          { trip_progress      :: Int
-                      ,trip_desc          :: String
-                      ,trip_pattern       :: Int
-                      ,trip_dir           :: Int
-                      ,trip_route         :: Int
-                      ,trip_tripNum       :: Int
-                      ,trip_destDist      :: Int
+     = Trip          { trip_progress         :: Int
+                      ,trip_desc             :: String
+                      ,trip_pattern          :: Int
+                      ,trip_dir              :: Int
+                      ,trip_route            :: Int
+                      ,trip_tripNum          :: Int
+                      ,trip_destDist         :: Int
                      } deriving Show
 
 instance FromJSON Trip where
@@ -121,33 +141,3 @@ instance FromJSON Trip where
          <*> (o .: "tripNum")
          <*> (o .: "destDist")
   parseJSON _ = mzero
-
-baseURL :: String
-baseURL = "http://developer.trimet.org/ws/V1/arrivals/appID/3B5489BFA2CDF3D5711521B76/json/true/"
-
-stopID  :: String
-stopID   = "9843"
-
-arrivalURL :: String -> String
-arrivalURL id  = (baseURL ++ "locIDs/" ++ id ++ "/")
-
-getJSON :: String -> IO B.ByteString
-getJSON s = simpleHttp (arrivalURL s)
-
-doSomething	    :: Maybe ResultSet -> String
-doSomething Nothing  = "Returned Nothing."
-doSomething (Just u) = "Returned Something"
-
-main :: IO()
-main = do 
---       json <- getJSON stopID
-       d <- (eitherDecode <$> (getJSON stopID)) :: IO (Either String ResultSet)
-       case d of
-         Left err -> putStrLn ("Error: " ++ err)
-	 Right rs -> print rs
---       putStrLn (show (decode json :: (Maybe Value)))
---       putStrLn (show (decode json :: Maybe ResultSet))
---       putStrLn (doSomething (decode json :: Maybe ResultSet))
-       
-
-
