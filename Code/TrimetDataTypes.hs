@@ -80,7 +80,7 @@ data Arrival
                       ,estimated          :: Maybe String
                       ,route              :: Int
                       ,departed           :: Bool
-                      ,blockPosition      :: Maybe Value
+                      ,blockPosition      :: Maybe BlockPosition
                       ,fullSign           :: String
                       ,piece              :: String
                      } deriving Show
@@ -127,7 +127,7 @@ data Trip
                       ,trip_pattern          :: Int
                       ,trip_dir              :: Int
                       ,trip_route            :: Int
-                      ,trip_tripNum          :: Int
+                      ,trip_tripNum          :: String
                       ,trip_destDist         :: Int
                      } deriving Show
 

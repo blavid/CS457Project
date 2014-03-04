@@ -51,7 +51,7 @@ main = do
        case d of
          Left err -> putStrLn ("Error: " ++ err)
 	 Right rs -> do
-                       print (locations rs)
+                       print (Prelude.map loc_desc (locations rs))
 		       print (queryTime rs)
-		       print (arrivals rs)
+		       print (Prelude.map blockPosition (arrivals rs))
 
