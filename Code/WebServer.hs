@@ -31,11 +31,11 @@ main = do simpleHTTP nullConf $ msum [  Happstack.Server.dir "arrivalsPage" $ ok
                                       , Happstack.Server.dir "stopFinderPage" $ ok "woooot"
                                      ]
 
-arrivalsMatch stopId = Data.Text.pack $ unsafeLocalState
+arrivalsMatch stopId = unsafeLocalState
                      $ do json <- (eitherDecode <$> (getArrival stopId)) :: IO (Either String ResultSet)
                           case json of
-                            Left err -> return ("Err: " ++ err)
-                            Right rs -> return (show rs)
+                            Left err -> return (Data.Text.pack ("Err: " ++ err))
+                            Right rs -> return (arrivalPageListing rs)
 
 
 
