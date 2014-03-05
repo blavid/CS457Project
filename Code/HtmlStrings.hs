@@ -3,26 +3,44 @@ module HtmlStrings where
 
 import Data.Text
 
+dconcat :: [Text] -> Text
+dconcat = Data.Text.concat
+
 htmlGlue :: [Text] -> Text
 htmlGlue = Prelude.foldl1 append
 
 htmlHead   :: Text -> Text
-htmlHead s = htmlGlue [htmlMeta, "<html>", s, "</html>"]
+htmlHead s = dconcat [htmlMeta, "<html>", s, "</html>"]
 
 htmlBody   :: Text -> Text
-htmlBody s = htmlGlue ["<body>", s, "</body>"]
+htmlBody s = dconcat ["<body>", s, "</body>"]
 
 htmlTitle   :: Text -> Text
-htmlTitle s = htmlGlue ["<title>", s, "</title>"]
+htmlTitle s = dconcat ["<title>", s, "</title>"]
 
 htmlMeta   :: Text
 htmlMeta = "<meta content='text/html;charset=utf-8' charset='UTF-8'>"
 
+arrivalTable :: Text -> Text
+arrivalTable s = dconcat ["<table class='arrival_table'>", s, "</table>"]
+
+tableRow     :: Text -> Text
+tableRow s   = dconcat ["<tr>", s, "</tr>"]
+
+tableHeader  :: Text -> Text
+tableHeader s = dconcat ["<th>", s, "</th>"]
+
+tableData    :: Text -> Text
+tableData s  = dconcat ["<td>", s, "</td>"]
+
 textBox           :: Text -> Text -> Text
-textBox label id  = htmlGlue [label,": <input id='", id, "' type='text'><br>"] 
+textBox label id  = dconcat [label,": <input id='", id, "' type='text'><br>"] 
 
 htmlButton          :: Text -> Text -> Text
-htmlButton label id = htmlGlue ["<button id='", id, "' class='float-left submit-button' >", label, "</button>"]
+htmlButton label id = dconcat ["<button id='", id, "' class='float-left submit-button' >", label, "</button>"]
+
+tableStyle :: Text
+tableStyle = pack "<style> table,th,td { border:1px solid black; border-collapse:collapse } </style>"
 
 arrivalsJS :: Text
 arrivalsJS = pack "<script type='text/javascript'> document.getElementById('arrivalsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/arrivals/' + document.getElementById('arrivalsText').value + '/';    }; </script>"
