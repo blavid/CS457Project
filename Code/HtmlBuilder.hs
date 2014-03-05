@@ -12,13 +12,22 @@ arrivalPageListing    :: ResultSet -> D.Text
 arrivalPageListing rs = (htmlHead.htmlBody) (dconcat [(arrivalParseResultSet rs), tableStyle])
 
 arrivalParseResultSet    :: ResultSet -> D.Text
-arrivalParseResultSet rs = dconcat ["<p>", getLocations (locations rs), "</p><p>", getArrivals (arrivals rs), "</p>"]
+arrivalParseResultSet rs = dconcat ["<p>", getLocations (arrivals rs) (locations rs), "</p>"]
 
-getLocations    :: [Location] -> D.Text
-getLocations ls = dconcat [ arrivalTable ( (tableRow.tableHeader)(parseLocation l)) | l <- ls]
+getLocations    :: [Arrival] -> [Location] -> D.Text
+getLocations as ls = dconcat [ arrivalTable (dconcat [(tableRow.tableHeader)(parseLocation l), getArrivals (loc_locid l) as]) | l <- ls]
 
 parseLocation   :: Location -> D.Text
 parseLocation l = dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l, " ", (D.pack.loc_desc) l] 
 
-getArrivals     :: [Arrival] -> D.Text
-getArrivals as = (D.pack.concat) [ "<p>" ++ (show a) ++  "</p>" | a <- as]
+getArrivals           :: Int -> [Arrival] -> D.Text
+getArrivals stopid as = (D.pack.concat) [ "<tr><td>" ++ (parseArrival a) ++  "</td><tr>" | a <- as, stopid == arr_locid a]
+
+parseArrival :: Arrival -> String
+parseArrival a = concat ["Route: ", (show.route) a, " | Sign: ",
+                         arr_shortSign a, " | Scheduled: ",
+                         arr_scheduled a, " | Estimated: ", (getEstimate.estimated) a]
+
+getEstimate :: Maybe String -> String
+getEstimate Nothing = "none"
+getEstimate (Just x) = x
