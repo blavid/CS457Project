@@ -2,26 +2,20 @@
 > module Main where
  
 > import Happstack.Server
-> import Happstack.Server.Monads
 > import qualified Data.ByteString.Char8           as B
 > import qualified Data.ByteString.Lazy.UTF8       as LU (toString, fromString)
-> import qualified Data.Text.Lazy.Encoding         as LT
-> import Data.ByteString.Lazy.Internal
-> import Data.ByteString.Lazy
-> import Data.Text
-> import qualified Data.ByteString                 as BS
-> import Control.Monad
+> import Data.Text                                 as DT (Text, unpack, pack)
+> import Control.Monad (msum)
 > import Control.Applicative
-> import Data.Char
 > import TrimetFunctions
 > import TrimetDataTypes
 > import HtmlBuilder
-> import Data.Aeson
-> import Foreign.Marshal.Unsafe
+> import Data.Aeson (eitherDecode) 
+> import Foreign.Marshal.Unsafe (unsafeLocalState)
  
 > instance ToMessage Text where
 >    toContentType _ = B.pack "text/html; charset=UTF-8"
->    toMessage = LU.fromString.Data.Text.unpack
+>    toMessage = LU.fromString.DT.unpack
  
 > main :: IO ()
 > main = do simpleHTTP nullConf $ msum [  Happstack.Server.dir "arrivalsPage" $ ok arrivalsMainPage
@@ -34,5 +28,5 @@
 > arrivalsMatch stopId = unsafeLocalState
 >                      $ do json <- (eitherDecode <$> callWebService (arrivalURL stopId)) :: IO (Either String ResultSet)
 >                           case json of
->                             Left err -> return (Data.Text.pack ("Err: " ++ err))
+>                             Left err -> return (DT.pack ("Err: " ++ err))
 >                             Right rs -> return (arrivalPageListing rs) 
