@@ -32,7 +32,7 @@ main = do simpleHTTP nullConf $ msum [  Happstack.Server.dir "arrivalsPage" $ ok
                                      ]
 
 arrivalsMatch stopId = unsafeLocalState
-                     $ do json <- (eitherDecode <$> (getArrival stopId)) :: IO (Either String ResultSet)
+                     $ do json <- (eitherDecode <$> callWebService (arrivalURL stopId)) :: IO (Either String ResultSet)
                           case json of
                             Left err -> return (Data.Text.pack ("Err: " ++ err))
                             Right rs -> return (arrivalPageListing rs)
