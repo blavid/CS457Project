@@ -38,7 +38,22 @@
  
 > htmlButton          :: Text -> Text -> Text
 > htmlButton label id = dconcat ["<button id='", id, "' class='float-left submit-button' >", label, "</button>"]
- 
+
+> htmlLink :: Text -> Text -> Text
+> htmlLink url label = dconcat ["<a href='", url, "'  target='_blank'>", label, "</a>"]
+
+> googleMapsBaseLink :: Text
+> googleMapsBaseLink = "http://maps.googleapis.com/maps/api/staticmap?zoom=14&size=400x400&sensor=false&"
+
+> googleMapsCenter :: Text -> Text
+> googleMapsCenter center = dconcat ["center=", center]
+
+> googleMapsSpacer :: Text
+> googleMapsSpacer = "%7C"
+
+> googleMapsMarkers :: Text 
+> googleMapsMarkers = "&markers="
+
 > tableStyle :: Text
 > tableStyle = pack "<style> table,th,td { border:1px solid black; border-collapse:collapse } </style>"
  

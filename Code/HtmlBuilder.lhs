@@ -20,7 +20,9 @@
 > getLocations (Just as) (Just ls) = dconcat [ arrivalTable (dconcat [(tableRow.tableHeader)(parseLocation l), getArrivals (loc_locid l) as]) | l <- ls]
  
 > parseLocation   :: Location -> D.Text
-> parseLocation l = dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l, " ", (D.pack.loc_desc) l] 
+> parseLocation l = dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l,
+>                                       " ", (D.pack.loc_desc) l,
+>                                       " ", googleMapLink (loc_lat l) (loc_lng l)] 
  
 > getArrivals           :: Int -> [Arrival] -> D.Text
 > getArrivals stopid as = (D.pack.concat) [ "<tr><td>" ++ (parseArrival a) ++  "</td><tr>" | a <- as, stopid == arr_locid a]
@@ -29,7 +31,13 @@
 > parseArrival a = concat ["Route: ", (show.route) a, " | Sign: ",
 >                          arr_shortSign a, " | Scheduled: ",
 >                          arr_scheduled a, " | Estimated: ", (getEstimate.estimated) a]
- 
+
+> googleMapLink :: Double -> Double -> D.Text
+> googleMapLink lat long = htmlLink (dconcat [googleMapsBaseLink, googleMapsCenter combined, googleMapsMarkers, combined]) "Map"
+>                        where tlat     = (D.pack.show) lat
+>                              tlong    = (D.pack.show) long
+>                              combined = dconcat [tlat, ",", tlong]
+
 > getEstimate :: Maybe String -> String
 > getEstimate Nothing = "none"
 > getEstimate (Just x) = x
