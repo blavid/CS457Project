@@ -26,7 +26,9 @@
 >                                      ]
  
 > arrivalsMatch stopId = unsafeLocalState
->                      $ do json <- (eitherDecode <$> callWebService (arrivalURL stopId)) :: IO (Either String ResultSet)
->                           case json of
+>                      $ do result <- decoded :: IO (Either String ResultSet)
+>                           case result of
 >                             Left err -> return (DT.pack ("Err: " ++ err))
->                             Right rs -> return (arrivalPageListing rs) 
+>                             Right rs -> return (arrivalPageListing rs)
+>                        where decoded = eitherDecode <$> json
+>                              json    = callWebService (arrivalURL stopId)

@@ -1,6 +1,11 @@
 > {-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
 > module TrimetFunctions where
 
+This module is used to build URL's to use the Trimet API and use those
+URL's to get a JSON response back from Trimet.  The parsing doesn't
+happen here, instead, other portions of the application will instead
+pass the JSON on.
+
 Only two things are imported. simpleHttp uses a URL built from a String to
 make a web service call.  It returns a ByteString, which is why we
 also import that.  For printing the ByteString, putStrLn for
