@@ -14,8 +14,10 @@
 > arrivalParseResultSet    :: ResultSet -> D.Text
 > arrivalParseResultSet rs = dconcat ["<p>", getLocations (arrivals rs) (locations rs), "</p>"]
  
-> getLocations    :: [Arrival] -> [Location] -> D.Text
-> getLocations as ls = dconcat [ arrivalTable (dconcat [(tableRow.tableHeader)(parseLocation l), getArrivals (loc_locid l) as]) | l <- ls]
+> getLocations    :: Maybe [Arrival] -> Maybe [Location] -> D.Text
+> getLocations x Nothing = D.pack "There is no stop associated with this Stop ID."
+> getLocations Nothing (Just ls) = dconcat [ arrivalTable (dconcat [(tableRow.tableHeader)(parseLocation l), D.pack "No arrivals within the next hour"]) | l <- ls]
+> getLocations (Just as) (Just ls) = dconcat [ arrivalTable (dconcat [(tableRow.tableHeader)(parseLocation l), getArrivals (loc_locid l) as]) | l <- ls]
  
 > parseLocation   :: Location -> D.Text
 > parseLocation l = dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l, " ", (D.pack.loc_desc) l] 

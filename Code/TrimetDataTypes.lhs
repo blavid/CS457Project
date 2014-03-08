@@ -39,15 +39,15 @@ Trimet returns a JSON response that contains a hierarchical dataset:
  
 > data ResultSet
 >      = ResultSet     { 
->                        locations    :: [Location]
->                       ,arrivals     :: [Arrival]
+>                        locations    :: Maybe [Location]
+>                       ,arrivals     :: Maybe [Arrival]
 >                       ,queryTime    :: String
 >                      } deriving Show
  
 > instance FromJSON ResultSet where
 >   parseJSON (Object o) = ResultSet <$> 
->                          ((o .: "resultSet") >>= (.: "location"))
->                      <*> ((o .: "resultSet") >>= (.: "arrival"))
+>                          ((o .: "resultSet") >>= (.:? "location"))
+>                      <*> ((o .: "resultSet") >>= (.:? "arrival"))
 >                      <*> ((o .: "resultSet") >>= (.: "queryTime"))
 >   parseJSON _ = mzero
  
