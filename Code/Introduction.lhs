@@ -127,4 +127,11 @@ type class.  Each custom data type needs an instance of FromJSON,
 which holds the definition for parsing into that data type.  Further
 details for these definitions will also be included in the 
 TrimetDataTypes module.
- 
+
+For generating the user interface, two .lhs files are used.  First
+HtmlStrings.lhs is a number of small functions that include static 
+strings, and "tagging" strings.  For example, an htmlBody function
+wraps the argument into body tags.  The logic for how to put all
+of that together is in the HtmlBuilder.lhs file.  Parsing of the 
+custom data types is tied together with the HtmlStrings to generate
+the needed HTML pages. 
