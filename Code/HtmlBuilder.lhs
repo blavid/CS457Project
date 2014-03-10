@@ -4,6 +4,11 @@
 > import qualified Data.Text as D
 > import HtmlStrings
 > import TrimetDataTypes
+> import Data.Time.Format 
+> import Data.Time.Clock
+> import Locale
+> import Data.Time.LocalTime
+
  
 > arrivalsMainPage :: D.Text 
 > arrivalsMainPage = (htmlHead.htmlBody) (dconcat [textBox "Stop ID" "arrivalsText", htmlButton "Get Arrivals" "arrivalsButton", arrivalsJS])
@@ -28,9 +33,18 @@
 > getArrivals stopid as = (D.pack.concat) [ "<tr><td>" ++ (parseArrival a) ++  "</td><tr>" | a <- as, stopid == arr_locid a]
  
 > parseArrival :: Arrival -> String
-> parseArrival a = concat ["Route: ", (show.route) a, " | Sign: ",
->                          arr_shortSign a, " | Scheduled: ",
->                          arr_scheduled a, " | Estimated: ", (getEstimate.estimated) a]
+> parseArrival a = concat ["Route: ", (show.route) a
+>                         ," | Sign: ", arr_shortSign a
+>                         , " | Scheduled: ", (timeFuncs.arr_scheduled) a
+>                         , " | Estimated: ", (getEstimate.estimated) a]
+>                         where timeFuncs = (convertTime.parseLocalTime)
+
+> parseLocalTime   :: String -> Maybe LocalTime
+> parseLocalTime a = parseTime defaultTimeLocale "%FT%T" (take 19 a)
+
+> convertTime     :: Maybe LocalTime -> String
+> convertTime Nothing = "No time."
+> convertTime (Just x) = formatTime defaultTimeLocale "%r" x
 
 > googleMapLink :: Double -> Double -> D.Text
 > googleMapLink lat long = htmlLink (dconcat [googleMapsBaseLink, googleMapsCenter combined, googleMapsMarkers, combined]) "Map"
@@ -40,4 +54,4 @@
 
 > getEstimate :: Maybe String -> String
 > getEstimate Nothing = "none"
-> getEstimate (Just x) = x
+> getEstimate (Just x) = (convertTime.parseLocalTime) x
