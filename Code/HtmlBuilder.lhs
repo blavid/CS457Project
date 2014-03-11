@@ -42,6 +42,10 @@ function to take apart the ResuiltSet.
 > arrivalPageListing rs = (htmlHead.htmlBody) 
 >                         (dconcat [(arrivalParseResultSet rs)
 >                                 , tableStyle])
+> arrivalPageListing rs = (htmlHead.htmlBody) (dconcat [(arrivalParseResultSet rs), tableStyle])
+
+> stopFinderMainPage :: D.Text
+> stopFinderMainPage  = (htmlHead htmlBody) (dconcat [htmlButton "Search" "nearbyStopsButton", geoLocationJS])
  
 This funtion begins to break the ResultSet into it's parts.  It calls
 getLocations, which takes a list of Maybe Arrivals, and a list of 
