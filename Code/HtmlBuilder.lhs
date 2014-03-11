@@ -10,11 +10,19 @@
 > import Data.Time.LocalTime
 
  
+-- Main Pages ------------------------------------------------
+
+--- Arrivals Input Page ---
 > arrivalsMainPage :: D.Text 
 > arrivalsMainPage = (htmlHead.htmlBody) (dconcat [textBox "Stop ID" "arrivalsText", htmlButton "Get Arrivals" "arrivalsButton", arrivalsJS])
  
+--- Arrivals Output Page ---
 > arrivalPageListing    :: ResultSet -> D.Text
 > arrivalPageListing rs = (htmlHead.htmlBody) (dconcat [(arrivalParseResultSet rs), tableStyle])
+
+--- StopFinder Input Page ---
+> stopFinderMainPage :: D.Text
+> stopFinderMainPage  = (htmlHead htmlBody) (dconcat [htmlButton "Search" "nearbyStopsButton", geoLocationJS])
  
 > arrivalParseResultSet    :: ResultSet -> D.Text
 > arrivalParseResultSet rs = dconcat ["<p>", getLocations (arrivals rs) (locations rs), "</p>"]
