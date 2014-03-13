@@ -38,3 +38,24 @@ to improve our ability to work with the Haskell programming language,
 learn how to use a REST API, and incorporate Haskell libraries
 together in order to create a meaningful product.  And those
 are things we believe we accomplished.
+
+
+--------------------------------------------------------
+Sources
+--------------------------------------------------------
+
+Materials used to learn about Haskell, outside of what 
+was covered in class, including libraries to use and
+how to use those libraries are from these sources.
+
+Hoogle (http://www.haskell.org/hoogle/)
+Hackage (http://hackage.haskell.org/)
+Happstack Crashcourse (http://www.happstack.com/docs/crashcourse/index.html)
+Trimet Developer Resources (http://developer.trimet.org/)
+FP Aeson Tutorial (https://www.fpcomplete.com/school/starting-with-haskell/
+                            libraries-and-frameworks/text-manipulation/json)
+Hackage Aeson Documentation (http://hackage.haskell.org/package/
+                             aeson-0.3.2.12/docs/Data-Aeson-TH.html)
+Example of parsing JSON with Aeson in Haskell
+(http://blog.raynes.me/blog/2012/11/27/
+     easy-json-parsing-in-haskell-with-aeson/)

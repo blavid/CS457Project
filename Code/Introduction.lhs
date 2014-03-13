@@ -134,4 +134,16 @@ strings, and "tagging" strings.  For example, an htmlBody function
 wraps the argument into body tags.  The logic for how to put all
 of that together is in the HtmlBuilder.lhs file.  Parsing of the 
 custom data types is tied together with the HtmlStrings to generate
-the needed HTML pages. 
+the needed HTML pages.
+
+--------------------------------------
+From here on out!
+-------------------------------------- 
+
+A lot can be done with the project from here on out.  Pictures and 
+proper CSS can be added into the front end.  More complicated and
+interesting tools can be built into the backend.  The ability to
+parse XML, or convert XML to JSON for parsing, can be put in so
+that more of the Trimet web service is accessible.  
+
+
