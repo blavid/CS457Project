@@ -58,6 +58,9 @@ function to take apart the ResuiltSet.
 > stopFinderMainPage  = (htmlHead.htmlBody) 
 >                       (dconcat [stopFinderForm
 >                                ,geolocationJS
+>                                ,onLoadJS "populateTextBoxes()"
+>                                ,showLocation
+>                                ,geoFindMeJS
 >                                ,nearbyStopsJS])
  
 This funtion begins to break the ResultSet into it's parts.  It calls
