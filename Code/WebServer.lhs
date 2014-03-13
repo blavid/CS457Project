@@ -86,7 +86,10 @@ HTTP headers, including a HTTP 200 code for "OK".
 >                                       , HS.dir "arrivals" $ 
 >                                                      path $ 
 >                                                  \s -> ok $ arrivalsMatch s 
->                                       , HS.dir "stopFinderPage" $ ok "woooot"
+>                                       , HS.dir "stopFinderPage" $ ok stopFinderPage
+>                                       , HS.dir "stopsNearby" $
+>                                                      path $ 
+>                                                  \ll -> ok $ stopFinderMatch ll 
 >                                      ]
  
 This function is used when the user requests the arrivals for one
@@ -105,3 +108,11 @@ to the web server.
 >                             Right rs -> return (arrivalPageListing rs)
 >                        where decoded = eitherDecode <$> json
 >                              json    = callWebService (arrivalURL stopId)
+
+> stopFinderMatch ll = unsafeLocalState
+>                    $ do result <- decoded :: IO (Either String StopsResultSet)
+>                         case result of
+>                             Left err -> return (DT.pack ("Err: " ++ err))
+>                             Right rs -> return (stopsNearbyListing rs)
+>                        where decoded = eitherDecode <$> json
+>                              json    = callWebService (stopFinderURL ll "meters" "500")

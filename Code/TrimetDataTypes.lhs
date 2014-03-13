@@ -36,6 +36,12 @@ Trimet returns a JSON response that contains a hierarchical dataset:
 
  
  -- Data Type Definitions and FromJSON Instance Definitions ---------------------
+
+> data StopsResultSet
+>      = StopsResultSet {
+>                        stoplocations    :: Maybe [Location]
+>                       ,stopqueryTime    :: String
+>                       } deriving Show
  
 > data ResultSet
 >      = ResultSet     { 

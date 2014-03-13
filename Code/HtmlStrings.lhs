@@ -40,6 +40,9 @@ these next few functions.
 > arrivalTable :: Text -> Text
 > arrivalTable s = dconcat ["<table class='arrival_table'>", s, "</table>"]
  
+> stopsTable :: Text -> Text
+> stopsTable s = dconcat ["<table class='stops_table'>", s, "</table>"]
+ 
 > tableRow     :: Text -> Text
 > tableRow s   = dconcat ["<tr>", s, "</tr>"]
  
@@ -49,6 +52,11 @@ these next few functions.
 > tableData    :: Text -> Text
 > tableData s  = dconcat ["<td>", s, "</td>"]
  
+Generic function to build a form.  Inside a form, there is a list of elements.
+
+> form	           :: Text -> [Text] -> Text
+> form name s = dconcat ["<form name='", name, "'>", dconcat s, "</form>"]
+
 Generic function to build a textBox.
 
 > textBox           :: Text -> Text -> Text
@@ -89,6 +97,9 @@ a new URL, based on the information put into the arrivals box.
 
 > arrivalsJS :: Text
 > arrivalsJS =  "<script type='text/javascript'> document.getElementById('arrivalsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/arrivals/' + document.getElementById('arrivalsText').value + '/';    }; </script>"
+ 
+> nearbyStopsJS :: Text
+> nearbyStopsJS  =  "<script type='text/javascript'> document.getElementById('nearbyStopsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/stopFinder/' + document.getElementById('lattitudeText').value + ',' + document.getElementById('longitudeText').value + '/';    }; </script>"
  
 This javascript gets the geolocation coordinates of the user.
 
