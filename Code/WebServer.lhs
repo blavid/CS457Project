@@ -86,7 +86,7 @@ HTTP headers, including a HTTP 200 code for "OK".
 >                                       , HS.dir "arrivals" $ 
 >                                                      path $ 
 >                                                  \s -> ok $ arrivalsMatch s 
->                                       , HS.dir "stopFinderPage" $ ok stopFinderPage
+>                                       , HS.dir "stopFinderPage" $ ok stopFinderMainPage
 >                                       , HS.dir "stopsNearby" $
 >                                                      path $ 
 >                                                  \ll -> ok $ stopFinderMatch ll 
@@ -110,7 +110,7 @@ to the web server.
 >                              json    = callWebService (arrivalURL stopId)
 
 > stopFinderMatch ll = unsafeLocalState
->                    $ do result <- decoded :: IO (Either String StopsResultSet)
+>                    $ do result <- decoded :: IO (Either String ResultSet)
 >                         case result of
 >                             Left err -> return (DT.pack ("Err: " ++ err))
 >                             Right rs -> return (stopsNearbyListing rs)

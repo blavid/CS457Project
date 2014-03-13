@@ -47,7 +47,7 @@ function to take apart the ResuiltSet.
 >                         (dconcat [(arrivalParseResultSet rs)
 >                                  ,tableStyle])
 
-> stopFinderForm     :: D.Text
+> stopFinderForm    :: D.Text
 > stopFinderForm      = form "stopFinderForm" [
 >                                 textBox "" "longitudeText"
 >                                ,textBox "" "lattitudeText"
@@ -69,9 +69,9 @@ Maybe Locations.
 >                                  , getLocations (arrivals rs) (locations rs)
 >                                  , "</p>"]
 
-> stopsParseResultSet    :: StopsResultSet -> D.Text
+> stopsParseResultSet    :: ResultSet -> D.Text
 > stopsParseResultSet rs = dconcat ["<p>"
->                                  , getStops (stoplocations rs)
+>                                  , getStops (locations rs)
 >                                  , "</p>"]
 
 Because we might or might not get any Locations or Arrivals, this
@@ -98,13 +98,8 @@ make sure the arrivals stop id matches the locations.
 > getStops   :: Maybe [Location] -> D.Text
 > getStops Nothing = "There are no stops nearby."
 > getStops (Just stops) = 
->          dconcat [stopsTable ((dconcat.inner) stop) | stop <- stops]
->             where inner stop   = [decLocs stop, "There are no stops nearby."]
->                   decLocs stop = (tableRow.tableHeader) (parseLocation stop)
-> getStops (Just stops) = 
->             dconcat [ stopsTable (dconcat (inner stop )) | stop <- stops]
->             where inner stop  = [decLocs stop, getStops (loc_locid stop) ]
->                   decLocs stop  = (tableRow.tableHeader)(parseLocation stop)
+>             stopsTable (dconcat [ (decLocs stop ) | stop <- stops])
+>             where decLocs stop  = (tableRow.tableHeader)(parseLocation stop)
 
 For each location, this will build the data stored into the table
 header.  This data is information related to the stop, including
