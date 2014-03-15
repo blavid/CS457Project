@@ -109,6 +109,7 @@ make sure the arrivals stop id matches the locations.
 >             stopsTable (dconcat [ (decLocs stop ) | stop <- stops])
 >             where decLocs stop  = (tableRow.tableHeader)(parseLocation stop)
 
+
 For each location, this will build the data stored into the table
 header.  This data is information related to the stop, including
 calling the function to generate a static google map to display 
