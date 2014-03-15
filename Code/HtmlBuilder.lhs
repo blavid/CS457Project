@@ -44,7 +44,7 @@ function to take apart the ResuiltSet.
 >                                 , tableStyle])
 
 > stopsNearbyListing rs = (htmlHead.htmlBody) 
->                         (dconcat [(arrivalParseResultSet rs)
+>                         (dconcat [(stopsParseResultSet rs)
 >                                  ,tableStyle])
 
 > stopFinderForm    :: D.Text
@@ -116,7 +116,8 @@ the locatin on a map.
  
 > parseLocation   :: Location -> D.Text
 > parseLocation l = 
->             dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l,
+>             dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l
+>                                    , htmlLink (dconcat [D.pack ("/arrivals/" ++ (show . loc_locid) l)]) ((D.pack . show . loc_locid) l),
 >                                 " ", (D.pack.loc_desc) l,
 >                                 " ", googleMapLink (loc_lat l) (loc_lng l)] 
 
