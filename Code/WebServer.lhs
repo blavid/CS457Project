@@ -121,3 +121,8 @@ to the web server.
 >                             Right rs -> return (stopsNearbyListing rs)
 >                        where decoded = eitherDecode <$> json
 >                              json    = callWebService (stopFinderURL ll)
+
+Testing:
+
+No formal testing done.  Use of the product was considered to be "testing" 
+this portion.

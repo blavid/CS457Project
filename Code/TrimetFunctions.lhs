@@ -55,6 +55,16 @@ conjunction with the URL building functions.
 > callWebService :: String -> IO ByteString
 > callWebService s = simpleHttp (s)
 
+
+wordsWhen is a utility function to turn a delimited list of
+Strings into a list of Strings 
+
+> wordsWhen     :: (Char -> Bool) -> String -> [String]
+> wordsWhen p s  =  case dropWhile p s of
+>                       "" -> []
+>                       s' -> w : wordsWhen p s''
+>                             where (w, s'') = break p s'
+
 Testing:
 For testing, we just want to make sure that we are getting relevant 
 JSON back.  For that, I have included a test function which will
@@ -79,10 +89,3 @@ call the callWebService function and print what it gets back.
 *TrimetFunctions> testURL (arrivalURL "-1")
 {"resultSet":{"errorMessage":{"content":"Location id not found -1"},"queryTime":"2014-03-08T13:33:02.758-0800"}}
 
-splitOn splits delimited strings into a list of strings:
-
-> wordsWhen     :: (Char -> Bool) -> String -> [String]
-> wordsWhen p s  =  case dropWhile p s of
->                       "" -> []
->                       s' -> w : wordsWhen p s''
->                             where (w, s'') = break p s'

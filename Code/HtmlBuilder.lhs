@@ -73,13 +73,20 @@ function to take apart the ResuiltSet.
 >      dconcat  [
 >                "<p>Enter your local coordinates or click 'Show my "
 >               ,"Location' to automatically fill it in.</p>"
->               ,textBox "Long." "longitudeText"
->               ,textBox "Lat. " "latitudeText"
->               ,textBox "Radius" "radius"
->               ,radioButton "units" "feet" "feet" True, "<br>"
->               ,radioButton "units" "meters" "meters" False, "<br>"
+>               , stopFinderFormInputTable
 >               ,htmlButton "Search" "nearbyStopsButton"
 >               ]
+
+> stopFinderFormInputTable :: D.Text
+> stopFinderFormInputTable = 
+>                basicTable (dconcat 
+>                 [
+>                  tableRow (textBox "Long." "longitudeTex")
+>                 ,tableRow (textBox "Lat. " "latitudeText")
+>                 ,tableRow (textBox "Radius" "radius")
+>                 ,tableRow (radioButton "units" "feet" "feet" True)
+>                 ,tableRow (radioButton "units" "meters" "meters" False)
+>                 ])
 
 > stopFinderMainPage :: D.Text
 > stopFinderMainPage  = 
@@ -220,3 +227,8 @@ This function creates the URL and link for a google map static image.
 > scnd (a, b, c) = b
 > thrd :: (a, b, c) -> c
 > thrd (a, b, c) = c
+
+Testing:
+
+No formal testing done for HtmlBuider, as it was felt that this was best done
+by using the product.
