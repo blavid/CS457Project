@@ -90,6 +90,7 @@ HTTP headers, including a HTTP 200 code for "OK".
 >                                       , HS.dir "stopsNearby" $
 >                                                      path $ 
 >                                                  \ll -> ok $ stopFinderMatch ll 
+>--                                     , HS.dir "scripts" $ serveDirectory DisableBrowsing [] "./scripts"
 >                                      ]
  
 This function is used when the user requests the arrivals for one
@@ -109,10 +110,11 @@ to the web server.
 >                        where decoded = eitherDecode <$> json
 >                              json    = callWebService (arrivalURL stopId)
 
+> stopFinderMatch   :: String -> Text
 > stopFinderMatch ll = unsafeLocalState
 >                    $ do result <- decoded :: IO (Either String ResultSet)
 >                         case result of
 >                             Left err -> return (DT.pack ("Err: " ++ err))
 >                             Right rs -> return (stopsNearbyListing rs)
 >                        where decoded = eitherDecode <$> json
->                              json    = callWebService (stopFinderURL ll "meters" "500")
+>                              json    = callWebService (stopFinderURL ll)

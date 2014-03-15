@@ -26,51 +26,61 @@ to come back later and refactor this into a data type, however
 time did not permit.
  
 > htmlHead   :: Text -> Text
-> htmlHead s = dconcat ["<html>", s, "</html>"]
+> htmlHead s = dconcat ["<!DOCTYPE html>\n<html>\n", s, "</html>\n"]
  
 > htmlBody   :: Text -> Text
-> htmlBody s = dconcat ["<body>", s, "</body>"]
+> htmlBody s = dconcat ["<body>\n", s, "</body>\n"]
  
 > htmlTitle   :: Text -> Text
-> htmlTitle s = dconcat ["<title>", s, "</title>"]
+> htmlTitle s = dconcat ["<title>\n", s, "</title>\n"]
  
 For the tables that are displayed, the base html is built in 
 these next few functions.
 
 > arrivalTable :: Text -> Text
-> arrivalTable s = dconcat ["<table class='arrival_table'>", s, "</table>"]
+> arrivalTable s = dconcat ["<table class='arrival_table'>\n", s, "</table>\n"]
  
 > stopsTable :: Text -> Text
-> stopsTable s = dconcat ["<table class='stops_table'>", s, "</table>"]
+> stopsTable s = dconcat ["<table class='stops_table'>\n", s, "</table>\n"]
  
 > tableRow     :: Text -> Text
-> tableRow s   = dconcat ["<tr>", s, "</tr>"]
+> tableRow s   = dconcat ["<tr>\n", s, "</tr>\n"]
  
 > tableHeader  :: Text -> Text
-> tableHeader s = dconcat ["<th>", s, "</th>"]
+> tableHeader s = dconcat ["<th>\n", s, "</th>\n"]
  
 > tableData    :: Text -> Text
-> tableData s  = dconcat ["<td>", s, "</td>"]
+> tableData s  = dconcat ["<td>\n", s, "</td>\n"]
  
 Generic function to build a form.  Inside a form, there is a list of elements.
 
 > form	           :: Text -> [Text] -> Text
-> form name s = dconcat ["<form name='", name, "'>", dconcat s, "</form>"]
+> form name s = dconcat ["<form name='", name, "'>\n", dconcat s, "</form>\n"]
 
 Generic function to build a textBox.
 
 > textBox           :: Text -> Text -> Text
-> textBox label id  = dconcat [label,": <input id='", id, "' type='text'><br>"] 
+> textBox label id  = dconcat [label,": <input id='", id, "' type='text'><br>\n"] 
  
+Generic function to build a radio button
+
+> radioButton  :: Text -> Text -> Text -> Bool -> Text
+> radioButton name value label checked = 
+>    dconcat [
+>            label
+>           ,": <input type='radio' name='", name, "' value='", value, "' "
+>           ,if checked then "checked>\n" else ">\n"
+>            ]
+
 Generic function to build a button.
 
 > htmlButton          :: Text -> Text -> Text
-> htmlButton label id = dconcat ["<button id='", id, "' class='float-left submit-button' >", label, "</button>"]
+> htmlButton label id = dconcat ["<button id='", id, "' class='float-left submit-button' >\n", label, "</button>\n"]
 
 Generic function to build a link.
 
 > htmlLink :: Text -> Text -> Text
-> htmlLink url label = dconcat ["<a href='", url, "'  target='_blank'>", label, "</a>"]
+> htmlLink url label = dconcat ["<a href='", url, "'  target='_blank'>\n", label, "</a>\n"]
 
 The next few functions are used to build a static google maps link.
 
@@ -89,81 +99,105 @@ The next few functions are used to build a static google maps link.
 Defines the visual behavior of the tables used for displaying informationg.
 
 > tableStyle :: Text
-> tableStyle = "<style> table,th,td { border:1px solid black; border-collapse:collapse } </style>"
+> tableStyle = "<style>\n table,th,td { border:1px solid black; border-collapse:collapse }\n </style>\n"
  
 Our site doesn't use normal HTML form behavior.  Instead, this
 Javascript redefines the behavior of the button to redirect to
 a new URL, based on the information put into the arrivals box.
 
 > arrivalsJS :: Text
-> arrivalsJS =  "<script type='text/javascript'> document.getElementById('arrivalsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/arrivals/' + document.getElementById('arrivalsText').value + '/';    }; </script>"
+> arrivalsJS =
+>     dconcat $ Prelude.map (append "\n") [
+>              "<script type='text/javascript'>"
+>             ," document.getElementById('arrivalsButton').onclick = function () {"
+>             ,"    location.href = 'http://192.241.236.98:8000/arrivals/' + "
+>             ,"                     document.getElementById('arrivalsText').value + '/';"
+>             ," };"
+>             ,"</script>"
+>             ]
  
 > nearbyStopsJS :: Text
-> nearbyStopsJS  =  "<script type='text/javascript'> document.getElementById('nearbyStopsButton').onclick = function () { location.href = 'http://192.241.236.98:8000/stopFinder/' + document.getElementById('lattitudeText').value + ',' + document.getElementById('longitudeText').value + '/';    }; </script>"
+> nearbyStopsJS  =  
+>     dconcat $ Prelude.map (append "\n") [
+>              "<script type='text/javascript'>"
+>             ," document.getElementById('nearbyStopsButton').onclick = function () {"
+>             ,"   var lat   = document.getElementById('latitudeText').value;"
+>             ,"   var lon   = document.getElementById('longitudeText').value;"
+>             ,"   var units = document.getElementsByName('units');"
+>             ,"   var i;"
+>             ,"   for (i=0;i<units.length;i++)"
+>             ,"     {"
+>             ,"     if (units[i].checked)"
+>             ,"       {"
+>             ,"       units = units[i].value;"
+>             ,"       }"
+>             ,"     }"
+>             ,"   var radius = document.getElementById('radius').value;"
+>             ,"   location.href = 'http://192.241.236.98:8000/stopsNearby/' + "
+>             ,"                    lat + ',' + "
+>             ,"                    lon + ',' + "
+>             ,"                    units + ',' + "
+>             ,"                    radius + '/';"
+>             ," };"
+>             ,"</script>"
+>             ]
  
 This javascript gets the geolocation coordinates of the user.
 
 > geolocationJS :: Text
 > geolocationJS = 
->     dconcat [
+>     dconcat $ Prelude.map (append "\n") [
 >              "<script type='text/javascript'>"
 >             ," var options = "
->             ,"  {  enableHighAccuracy: true"
->             ,"    ,timeout: 5000"
->             ,"    ,maximumAge: 0 "
->             ,"  }; "
+>             ,"  {  enableHighAccuracy:true, timeout: 5000, maximumAge: 0}; "
 >             ,"function success(pos) {"
 >             ,"  var crd = pos.coords;"
 >             ,"  /*CODEHERE*/ "
->             ,"}; "
+>             ,"}"
 >             ,"function error(err) {"
->             ,"  console.warn('ERROR(' + err.code + '): ' + err.message); }; "
+>             ,"  console.warn('ERROR(' + err.code + '): ' + err.message); } "
 >             ,"function getLocation() {"
 >             ,"  navigator.geolocation.getCurrentPosition(success, error, options); }"
 >             ,"function populateTextBoxes() {"
->             ,"navigator.geolocation.getCurrentPosition(function(position) {"
->             ,"  document.getElementById('lattitudeText').value = position.coords.latitude;"
+>             ,"  document.getElementById('latitudeText').value = position.coords.latitude;"
 >             ,"  document.getElementById('longitudeText').value = position.coords.longitude;"
->             ,"});"
->             ," </script>"
+>             ,"}"
+>             ,"</script>"
 >             ]
 
 Javascript to run a script on page load
 
 > onLoadJS       :: Text -> Text
-> onLoadJS script = dconcat ["<script type='text/javascript'>window.onload = ", script, ";</script>"]
+> onLoadJS script = dconcat ["<script type='text/javascript'>\n  window.onload = ", script, ";\n</script>\n"]
 
 
 > geoFindMeJS :: Text
 > geoFindMeJS  = 
->  dconcat [
+>     dconcat $ Prelude.map (append "\n") [
 >          "<script type='text/javascript'>"
 >          ,"function geoFindMe() {"
 >          ,"  var output = document.getElementById(\"out\");"
->          ,""
 >          ,"  if (!navigator.geolocation){"
 >          ,"    output.innerHTML = \"<p>Geolocation is not supported by your browser</p>\";"
 >          ,"    return;"
 >          ,"  }"
->          ,""
 >          ,"  function success(position) {"
 >          ,"    var latitude  = position.coords.latitude;"
 >          ,"    var longitude = position.coords.longitude;"
 >          ,""
 >          ,"    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';"
+>          ,"    document.getElementById('latitudeText').value = latitude;"
+>          ,"    document.getElementById('longitudeText').value = longitude;"
 >          ,""
 >          ,"    var img = new Image();"
->          ,"    img.src = \"http://maps.googleapis.com/maps/api/staticmap?center=\" + latitude + \",\" + longitude + \"&zoom=13&size=300x300&sensor=false\";"
+>          ,"    img.src = \"http://maps.googleapis.com/maps/api/staticmap?center=\" + latitude + \",\" + longitude + \"&zoom=15&size=500x500&markers=color:blue%7Clabel:S%7C\" + latitude + \",\" + longitude + \"&sensor=false\";"
 >          ,""
 >          ,"    output.appendChild(img);"
->          ,"  };"
->          ,""
+>          ,"  }"
 >          ,"  function error() {"
 >          ,"    output.innerHTML = \"Unable to retrieve your location\";"
->          ,"  };"
->          ,""
+>          ,"  }"
 >          ,"  output.innerHTML = \"<p>Locating...</p>\";"
->          ,""
 >          ,"  navigator.geolocation.getCurrentPosition(success, error);"
 >          ,"}"
 >          ," </script>"
@@ -171,5 +205,5 @@ Javascript to run a script on page load
 
 > showLocation :: Text
 > showLocation  = 
->  dconcat [" <p><button onclick=\"geoFindMe()\">Show my location</button></p> <div id=\"out\"></div>"]
+>  dconcat ["\n<p><button onclick=\"geoFindMe()\">Show my location</button></p>\n<div id=\"out\"></div>\n"]
 

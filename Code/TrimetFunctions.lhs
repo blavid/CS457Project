@@ -40,9 +40,12 @@ the form of: '###.###########,###.##########'.  It also requires the
 units (feet or meter) and range.  It returns a JSON object represented
 as a String.
 
-> stopFinderURL                      :: String -> String -> String -> String
-> stopFinderURL crds unit dist = baseURL ++ "/V1/stops" ++ appID 
->                             ++ "/ll/" ++ crds ++ "/" ++ unit ++ "/" ++ dist
+> stopFinderURL      :: String -> String
+> stopFinderURL input = baseURL ++ "/V1/stops" ++ appID ++ "/ll/" ++ crds ++ "/" ++ unit ++ "/" ++ dist
+>                       where crds = inputStrings !! 0 ++ "," ++ inputStrings !! 1
+>                             unit = inputStrings !! 2
+>                             dist = inputStrings !! 3
+>                             inputStrings = wordsWhen (==',') input
  
 Calling a web service:
 This function takes a URL and uses the Conduit function simpleHttp to 
@@ -76,3 +79,10 @@ call the callWebService function and print what it gets back.
 *TrimetFunctions> testURL (arrivalURL "-1")
 {"resultSet":{"errorMessage":{"content":"Location id not found -1"},"queryTime":"2014-03-08T13:33:02.758-0800"}}
 
+splitOn splits delimited strings into a list of strings:
+
+> wordsWhen     :: (Char -> Bool) -> String -> [String]
+> wordsWhen p s  =  case dropWhile p s of
+>                       "" -> []
+>                       s' -> w : wordsWhen p s''
+>                             where (w, s'') = break p s'
