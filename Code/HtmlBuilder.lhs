@@ -37,9 +37,8 @@ throughout the rest of the module.
 >                            , textBox "Stop ID" "arrivalsText"
 >                            , htmlButton "Get Arrivals" "arrivalsButton"
 >                            , footer
->                            , javascript url
+>                            , javascript "arrivals.js"
 >                            ])
->               where url = "http://192.241.236.98/javascript/arrivals.js"
 
 
 The next functions are involved with generating a page listing of 
@@ -89,8 +88,8 @@ function to take apart the ResuiltSet.
 >           header "Find Stops Nearby"
 >          ,stopFinderForm
 >          ,showLocation
->          ,geoFindMeJS
->          ,nearbyStopsJS
+>          ,javascript "geofindme.js"
+>          ,javascript "nearbystops.js"
 >          ,footer
 >          ])
  

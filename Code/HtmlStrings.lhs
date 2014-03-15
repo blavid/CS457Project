@@ -26,7 +26,7 @@ to come back later and refactor this into a data type, however
 time did not permit.
  
 > htmlHead   :: Text -> Text
-> htmlHead s = dconcat ["<!DOCTYPE html>\n<html>\n", s, "</html>\n"]
+> htmlHead s = dconcat ["<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n<html>\n", s, "</html>\n"]
  
 > htmlBody   :: Text -> Text
 > htmlBody s = dconcat ["<body>\n", s, "</body>\n"]
@@ -105,13 +105,22 @@ Our site doesn't use normal HTML form behavior.  Instead, this
 Javascript redefines the behavior of the button to redirect to
 a new URL, based on the information put into the arrivals box.
 
-> javascript :: Text -> Text
+> styleSheet    :: Text -> Text
+> styleSheet url = dconcat 
+>                    [
+>                     "<link rel='stylesheet' href='http://192.241.236.98/css/"
+>                    ,url
+>                    ,"' type='text/css' media='screen'>"
+>                    ]
+
+> javascript    :: Text -> Text
 > javascript url = dconcat 
 >                    [
->                     "<script src='"
+>                     "<script src='http://192.241.236.98/javascript/"
 >                    ,url
 >                    ,"'></script>"
 >                    ]
+
 
 > onLoadJS       :: Text -> Text
 > onLoadJS script = dconcat ["<script type='text/javascript'>\n  window.onload = ", script, ";\n</script>\n"]
@@ -124,7 +133,15 @@ a new URL, based on the information put into the arrivals box.
 > footer :: Text
 > footer  = 
 >    dconcat $ Prelude.map (append "\n") [
->       javascript "lavalamp_test.css"
+>       "<p>This is the footer</p>"
+>      ,"<p>Other HTML elements can go in here.</p>"
+>     ]
+
+> header        :: Text -> Text
+> header caption = 
+>    dconcat $ Prelude.map (append "\n") [
+>       "<a href='/'><img src='http://192.241.236.98/images/header.jpg'></a>"
+>      ,styleSheet "lavalamp_test.css"
 >      ,javascript "jquery-1.1.3.1.min.js"
 >      ,javascript "jquery.easing.min.js"
 >      ,javascript "jquery.lavalamp.min.js"
@@ -134,19 +151,18 @@ a new URL, based on the information put into the arrivals box.
 >      ,"            fx: 'backout', "
 >      ,"            speed: 700,"
 >      ,"            click: function(event, menuItem) {"
->      ,"                return false;"
+>      ,"                return true;"
 >      ,"            }"
 >      ,"        });"
 >      ,"    });"
 >      ,"</script>"
->          "<p>This is the footer</p>"
->         ,"<p>Other HTML elements can go in here.</p>"
->          ]
-
-> header        :: Text -> Text
-> header caption = 
->    dconcat $ Prelude.map (append "\n") [
->          "<a href='/'><img src='http://192.241.236.98/images/header.jpg'></a>"
+>      ,"<h3>With Image</h3>"
+>      ,"<ul class='lavaLampWithImage' id='1'>"
+>      ,"    <li><a href='/'>Home</a></li>"
+>      ,"    <li><a href='/stopFinderPage'>Nearby Stops</a></li>"
+>      ,"    <li><a href='/arrivalsPage'>Arrivals</a></li>"
+>      ,"    <li><a href='/about'>About</a></li>"
+>      ,"</ul>"
 >         ,"<h1>",caption,"</h1>"
 >         ,"<p>This is the header</p>"
 >         ,"<p>Other HTML elements can go in here.</p>"
