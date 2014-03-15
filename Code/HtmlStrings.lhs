@@ -42,7 +42,10 @@ these next few functions.
  
 > stopsTable :: Text -> Text
 > stopsTable s = dconcat ["<table class='stops_table'>\n", s, "</table>\n"]
- 
+
+> basicTable :: Text -> Text
+> basicTable s = dconcat ["<table>", s, "</table>"]
+
 > tableRow     :: Text -> Text
 > tableRow s   = dconcat ["<tr>\n", s, "</tr>\n"]
  
@@ -60,16 +63,17 @@ Generic function to build a form.  Inside a form, there is a list of elements.
 Generic function to build a textBox.
 
 > textBox           :: Text -> Text -> Text
-> textBox label id  = dconcat [label,": <input id='", id, "' type='text'><br>\n"] 
+> textBox label id  = dconcat ["<td>", label,":</td> <td> <input id='", id, "' type='text'></td>\n"] 
  
 Generic function to build a radio button
 
 > radioButton  :: Text -> Text -> Text -> Bool -> Text
 > radioButton name value label checked = 
 >    dconcat [
->            label
->           ,": <input type='radio' name='", name, "' value='", value, "' "
->           ,if checked then "checked>\n" else ">\n"
+>            "<td>"
+>           ,label
+>           ,":</td><td> <input type='radio' name='", name, "' value='", value, "' "
+>           ,if checked then "checked></td>\n" else "></td>\n"
 >            ]
 
 Generic function to build a button.
@@ -170,3 +174,6 @@ a new URL, based on the information put into the arrivals box.
 >         ,"<p>This is the header</p>"
 >         ,"<p>Other HTML elements can go in here.</p>"
 >          ]
+
+No formal testing done for HtmlStrings, as it was felt that using the
+product was the best way to verify that it was peforming correctly.
