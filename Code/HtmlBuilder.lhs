@@ -23,12 +23,13 @@ data type, each portion is put into a list, then the Text concatonate
 is used to combine them into a single Text.  This same pattern occurs
 throughout the rest of the module.
 
-> homePage         :: D.Text
-> homePage          = (htmlHead . htmlBody)
->                     (dconcat [
->                               header "Home Page"
->                              ,footer
->                              ])
+> homePage  :: D.Text
+> homePage   = (htmlHead . htmlBody)
+>              (dconcat [
+>                        header "Transit>>Tracker Home Page"
+>                       ,"<p>Welcome to the Transit >> Tracker project page. Click on a menu item above to get started.</p>"
+>                       ,footer
+>                       ])
 
 > arrivalsMainPage :: D.Text 
 > arrivalsMainPage = (htmlHead.htmlBody)
@@ -90,6 +91,16 @@ function to take apart the ResuiltSet.
 >          ,showLocation
 >          ,javascript "geofindme.js"
 >          ,javascript "nearbystops.js"
+>          ,footer
+>          ])
+
+> aboutPage :: D.Text
+> aboutPage  = 
+>      (htmlHead.htmlBody) 
+>      (dconcat 
+>          [
+>           header "About this app"
+>          ,aboutText
 >          ,footer
 >          ])
  

@@ -136,8 +136,7 @@ a new URL, based on the information put into the arrivals box.
 > footer :: Text
 > footer  = 
 >    dconcat $ Prelude.map (append "\n") [
->       "<p>This is the footer</p>"
->      ,"<p>Other HTML elements can go in here.</p>"
+>       "<p><font size=2>Robert Konell and Blake Wellington</font></p>"
 >     ]
 
 > header        :: Text -> Text
@@ -159,14 +158,18 @@ a new URL, based on the information put into the arrivals box.
 >      ,"        });"
 >      ,"    });"
 >      ,"</script>"
->      ,"<h3>With Image</h3>"
 >      ,"<ul class='lavaLampWithImage' id='1'>"
 >      ,"    <li><a href='/'>Home</a></li>"
 >      ,"    <li><a href='/stopFinderPage'>Nearby Stops</a></li>"
->      ,"    <li><a href='/arrivalsPage'>Arrivals</a></li>"
+>      ,"    <li><a href='/arrivalsPage'>Show Arrivals</a></li>"
 >      ,"    <li><a href='/about'>About</a></li>"
 >      ,"</ul>"
->         ,"<h1>",caption,"</h1>"
->         ,"<p>This is the header</p>"
->         ,"<p>Other HTML elements can go in here.</p>"
+>         ,"<h3>",caption,"</h3>"
 >          ]
+
+> aboutText :: Text
+> aboutText  =
+>  "<p>This is some text. \
+>  \it contains many lines. \
+>  \and spans multiple lines of \
+>  \code</p>" 

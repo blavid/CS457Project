@@ -92,6 +92,7 @@ HTTP headers, including a HTTP 200 code for "OK".
 >                                                      path $ 
 >                                                  \ll -> ok $ stopFinderMatch ll 
 >                                       , HS.dir "index.html" $ ok homePage 
+>                                       , HS.dir "about" $ ok aboutPage 
 >                                       , HS.seeOther ("index.html" :: String) "index.html"
 >                                      ]
  
