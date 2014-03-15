@@ -86,10 +86,12 @@ function to take apart the ResuiltSet.
 >           header "Find Stops Nearby"
 >          ,stopFinderForm
 >          ,showLocation
->          ,geoFindMeJS
->          ,nearbyStopsJS
+>          ,javascript geourl
+>          ,javascript nearbyurl
 >          ,footer
 >          ])
+>      where geourl = "http://192.241.236.98/javascript/geofindme.js"
+>            nearbyurl =  "http://192.241.236.98/javascript/nearbystops.js"
  
 This funtion begins to break the ResultSet into it's parts.  It calls
 getLocations, which takes a list of Maybe Arrivals, and a list of 
@@ -123,7 +125,7 @@ make sure the arrivals stop id matches the locations.
 >                   decLocs l = (tableRow.tableHeader) (parseLocation l)
 > getLocations (Just as) (Just ls) = 
 >             dconcat [ arrivalTable (dconcat (inner l as)) | l <- ls]
->             where inner l as = [decLocs l, getArrivals (loc_locid l) as]
+>             where inner l as = [decLocs l, getArrivals l as]
 >                   decLocs l  = (tableRow.tableHeader)(parseLocation l)
 
 > getStops   :: Maybe [Location] -> D.Text
@@ -142,29 +144,35 @@ the locatin on a map.
 > parseLocation l = 
 >             dconcat [ "Stop Info: ", htmlLink (aLink l) (stopId l), 
 >                                 " ", (D.pack.loc_desc) l,
->                                 " ", googleMapLink (loc_lat l) (loc_lng l)] 
->            where aLink l = (dconcat [D.pack ("/arrivals/" ++ (show . loc_locid) l)])
->                  stopId l = ((D.pack . show . loc_locid) l)
+>                                 " ", googleMapLink [((loc_lat l),(loc_lng l), "Stop")]] 
+>                  where aLink l = (dconcat [D.pack ("/arrivals/" ++ (show . loc_locid) l)])
+>                        stopId l = ((D.pack . show . loc_locid) l)
 
 getArrivals takes the list of arrivals and the current location stop id,
 and builds the table rows for each arrival at that stop id.  The list of
 arrivals can be arrivals from multiple stops, so a guard is used to 
 only add in arrivals who are related to the current stop id.
 
-> getArrivals           :: Int -> [Arrival] -> D.Text
-> getArrivals stopid as = (D.pack.concat) [ theString a | a <- as, stopid == arr_locid a]
+> getArrivals      :: Location -> [Arrival] -> D.Text
+> getArrivals l as = (D.pack.concat) 
+>                    [ theString a | a <- as, loc_locid l == arr_locid a]
 >                         where theString a = "<tr><td>" 
->                                           ++ (parseArrival a) 
+>                                           ++ (parseArrival a l) 
 >                                           ++  "</td><tr>" 
 
 For each arrival, the data for a table entry is created here.
 
-> parseArrival :: Arrival -> String
-> parseArrival a = concat ["Route: ", (show.route) a
+> parseArrival     :: Arrival -> Location -> String
+> parseArrival a l = concat ["Route: ", (show.route) a
 >                        , " | Sign: ", arr_shortSign a
 >                        , " | Scheduled: ", (timeFuncs.arr_scheduled) a
->                        , " | Estimated: ", (getEstimate.estimated) a]
+>                        , " | Estimated: ", (getEstimate.estimated) a
+>                        , " | ", generateArrivalMap (blockPosition a) l]
 >                         where timeFuncs = (convertTime.parseLocalTime)
+
+> generateArrivalMap            :: Maybe BlockPosition -> Location -> String
+> generateArrivalMap Nothing l  = "No map available."
+> generateArrivalMap (Just b) l = D.unpack (googleMapLink [(loc_lat l, loc_lng l, "S"), (bp_lat b, bp_lng b, "V")])
 
 The next three functions are for parsing the time strings returned from
 the JSON objects.  The goal is to present the times in a more human
@@ -188,9 +196,16 @@ getEstimate is used for the time estimate, as it isn't always available.
 
 This function creates the URL and link for a google map static image.
 
-> googleMapLink :: Double -> Double -> D.Text
-> googleMapLink lat long = htmlLink (dconcat [googleMapsBaseLink, googleMapsCenter combined, googleMapsMarkers, combined]) "Map"
->                        where tlat     = (D.pack.show) lat
->                              tlong    = (D.pack.show) long
->                              combined = dconcat [tlat, ",", tlong]
+> googleMapLink :: [(Double,Double, D.Text)] -> D.Text
+> googleMapLink coords = htmlLink (dconcat [googleMapsBaseLink, googleMapsCenter center, combined]) "Map"
+>   where dToS   = (D.pack.show)
+>         center = dconcat [(dToS.frst.head)coords, ",", (dToS.scnd.head)coords]
+>         combined = (dconcat.concat) [ [googleMapsMarkers (thrd c), (dToS.frst) c, ",", (dToS.scnd) c, googleMapsSpacer] | c <- coords ] 
 
+
+> frst :: (a, b, c) -> a
+> frst (a, b, c) = a
+> scnd :: (a, b, c) -> b
+> scnd (a, b, c) = b
+> thrd :: (a, b, c) -> c
+> thrd (a, b, c) = c

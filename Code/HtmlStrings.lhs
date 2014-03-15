@@ -93,8 +93,11 @@ The next few functions are used to build a static google maps link.
 > googleMapsSpacer :: Text
 > googleMapsSpacer = "%7C"
 
-> googleMapsMarkers :: Text 
-> googleMapsMarkers = "&markers="
+> googleMapsMarkers       :: Text -> Text 
+> googleMapsMarkers label = dconcat [
+>                            "&markers=label:"
+>                            , label
+>                            , googleMapsSpacer ]
 
 Defines the visual behavior of the tables used for displaying informationg.
 
