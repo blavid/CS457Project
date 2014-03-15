@@ -25,8 +25,11 @@ throughout the rest of the module.
 
 > arrivalsMainPage :: D.Text 
 > arrivalsMainPage = (htmlHead.htmlBody)
->                    (dconcat [textBox "Stop ID" "arrivalsText"
+>                    (dconcat [
+>                              header "Finds stops by Stop ID"
+>                            , textBox "Stop ID" "arrivalsText"
 >                            , htmlButton "Get Arrivals" "arrivalsButton"
+>                            , footer
 >                            , arrivalsJS])
 
 
@@ -40,8 +43,14 @@ function to take apart the ResuiltSet.
  
 > arrivalPageListing    :: ResultSet -> D.Text
 > arrivalPageListing rs = (htmlHead.htmlBody) 
->                         (dconcat [(arrivalParseResultSet rs)
->                                 , tableStyle])
+>                         (dconcat 
+>                             [
+>                              header "Stops for requested locations"
+>                             ,arrivalParseResultSet rs
+>                             ,footer
+>                             ,tableStyle
+>                             ]
+>                          )
 
 > stopsNearbyListing rs = (htmlHead.htmlBody) 
 >                         (dconcat [(stopsParseResultSet rs)
@@ -50,7 +59,8 @@ function to take apart the ResuiltSet.
 > stopFinderForm    :: D.Text
 > stopFinderForm      = 
 >      dconcat  [
->                "<p>Enter your local coordinates or click 'Show my Location' to automatically fill it in.</p>"
+>                "<p>Enter your local coordinates or click 'Show my "
+>               ,"Location' to automatically fill it in.</p>"
 >               ,textBox "Long." "longitudeText"
 >               ,textBox "Lat. " "latitudeText"
 >               ,textBox "Radius" "radius"
@@ -121,10 +131,11 @@ the locatin on a map.
  
 > parseLocation   :: Location -> D.Text
 > parseLocation l = 
->             dconcat [ "Stop Info: ",  (D.pack.show.loc_locid) l
->                                    , htmlLink (dconcat [D.pack ("/arrivals/" ++ (show . loc_locid) l)]) ((D.pack . show . loc_locid) l),
+>             dconcat [ "Stop Info: ", htmlLink (aLink l) (stopId l), 
 >                                 " ", (D.pack.loc_desc) l,
 >                                 " ", googleMapLink (loc_lat l) (loc_lng l)] 
+>            where aLink l = (dconcat [D.pack ("/arrivals/" ++ (show . loc_locid) l)])
+>                  stopId l = ((D.pack . show . loc_locid) l)
 
 getArrivals takes the list of arrivals and the current location stop id,
 and builds the table rows for each arrival at that stop id.  The list of
