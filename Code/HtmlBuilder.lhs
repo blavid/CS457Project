@@ -60,8 +60,11 @@ function to take apart the ResuiltSet.
 >                          )
 
 > stopsNearbyListing rs = (htmlHead.htmlBody) 
->                         (dconcat [(stopsParseResultSet rs)
->                                  ,tableStyle])
+>                         (dconcat [
+>                                   header "Stops Nearby"
+>                                  ,(stopsParseResultSet rs)
+>                                  ,tableStyle
+>                                  ])
 
 > stopFinderForm    :: D.Text
 > stopFinderForm      = 

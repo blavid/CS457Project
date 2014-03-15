@@ -210,6 +210,21 @@ Javascript to run a script on page load
 > footer :: Text
 > footer  = 
 >    dconcat $ Prelude.map (append "\n") [
+>       javascript "lavalamp_test.css"
+>      ,javascript "jquery-1.1.3.1.min.js"
+>      ,javascript "jquery.easing.min.js"
+>      ,javascript "jquery.lavalamp.min.js"
+>      ,"<script type='text/javascript'>"
+>      ,"    $(function() {"
+>      ,"        $('#1, #2, #3').lavaLamp({"
+>      ,"            fx: 'backout', "
+>      ,"            speed: 700,"
+>      ,"            click: function(event, menuItem) {"
+>      ,"                return false;"
+>      ,"            }"
+>      ,"        });"
+>      ,"    });"
+>      ,"</script>"
 >          "<p>This is the footer</p>"
 >         ,"<p>Other HTML elements can go in here.</p>"
 >          ]
