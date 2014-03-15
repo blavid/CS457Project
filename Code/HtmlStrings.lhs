@@ -217,7 +217,8 @@ Javascript to run a script on page load
 > header        :: Text -> Text
 > header caption = 
 >    dconcat $ Prelude.map (append "\n") [
->          "<h1>",caption,"</h1>"
+>          "<a href='/'><img src='http://192.241.236.98/images/header.jpg'></a>"
+>         ,"<h1>",caption,"</h1>"
 >         ,"<p>This is the header</p>"
 >         ,"<p>Other HTML elements can go in here.</p>"
 >          ]

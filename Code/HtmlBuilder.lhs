@@ -23,6 +23,13 @@ data type, each portion is put into a list, then the Text concatonate
 is used to combine them into a single Text.  This same pattern occurs
 throughout the rest of the module.
 
+> homePage         :: D.Text
+> homePage          = (htmlHead . htmlBody)
+>                     (dconcat [
+>                               header "Home Page"
+>                              ,footer
+>                              ])
+
 > arrivalsMainPage :: D.Text 
 > arrivalsMainPage = (htmlHead.htmlBody)
 >                    (dconcat [textBox "Stop ID" "arrivalsText"
