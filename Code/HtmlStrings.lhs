@@ -207,3 +207,17 @@ Javascript to run a script on page load
 > showLocation  = 
 >  dconcat ["\n<p><button onclick=\"geoFindMe()\">Show my location</button></p>\n<div id=\"out\"></div>\n"]
 
+> footer :: Text
+> footer  = 
+>    dconcat $ Prelude.map (append "\n") [
+>          "<p>This is the footer</p>"
+>         ,"<p>Other HTML elements can go in here.</p>"
+>          ]
+
+> header        :: Text -> Text
+> header caption = 
+>    dconcat $ Prelude.map (append "\n") [
+>          "<h1>",caption,"</h1>"
+>         ,"<p>This is the header</p>"
+>         ,"<p>Other HTML elements can go in here.</p>"
+>          ]

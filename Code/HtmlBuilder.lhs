@@ -50,23 +50,27 @@ function to take apart the ResuiltSet.
 > stopFinderForm    :: D.Text
 > stopFinderForm      = 
 >      dconcat  [
->                textBox "Long." "longitudeText"
+>                "<p>Enter your local coordinates or click 'Show my Location' to automatically fill it in.</p>"
+>               ,textBox "Long." "longitudeText"
 >               ,textBox "Lat. " "latitudeText"
 >               ,textBox "Radius" "radius"
->               ,radioButton "units" "feet" "feet" True
->               ,radioButton "units" "meters" "meters" False
+>               ,radioButton "units" "feet" "feet" True, "<br>"
+>               ,radioButton "units" "meters" "meters" False, "<br>"
 >               ,htmlButton "Search" "nearbyStopsButton"
 >               ]
 
 > stopFinderMainPage :: D.Text
-> stopFinderMainPage  = (htmlHead.htmlBody) 
->                       (dconcat [stopFinderForm
->--                              ,geolocationJS
->                                ,showLocation
->                                ,geoFindMeJS
->                                ,nearbyStopsJS
->--                              ,onLoadJS "populateTextBoxes"
->                                ])
+> stopFinderMainPage  = 
+>      (htmlHead.htmlBody) 
+>      (dconcat 
+>          [
+>           header "Find Stops Nearby"
+>          ,stopFinderForm
+>          ,showLocation
+>          ,geoFindMeJS
+>          ,nearbyStopsJS
+>          ,footer
+>          ])
  
 This funtion begins to break the ResultSet into it's parts.  It calls
 getLocations, which takes a list of Maybe Arrivals, and a list of 
