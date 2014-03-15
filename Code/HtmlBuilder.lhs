@@ -37,9 +37,8 @@ throughout the rest of the module.
 >                            , textBox "Stop ID" "arrivalsText"
 >                            , htmlButton "Get Arrivals" "arrivalsButton"
 >                            , footer
->                            , javascript url
+>                            , javascript "arrivals.js"
 >                            ])
->               where url = "http://192.241.236.98/javascript/arrivals.js"
 
 
 The next functions are involved with generating a page listing of 
@@ -62,8 +61,11 @@ function to take apart the ResuiltSet.
 >                          )
 
 > stopsNearbyListing rs = (htmlHead.htmlBody) 
->                         (dconcat [(stopsParseResultSet rs)
->                                  ,tableStyle])
+>                         (dconcat [
+>                                   header "Stops Nearby"
+>                                  ,(stopsParseResultSet rs)
+>                                  ,tableStyle
+>                                  ])
 
 > stopFinderForm    :: D.Text
 > stopFinderForm      = 
@@ -86,12 +88,10 @@ function to take apart the ResuiltSet.
 >           header "Find Stops Nearby"
 >          ,stopFinderForm
 >          ,showLocation
->          ,javascript geourl
->          ,javascript nearbyurl
+>          ,javascript "geofindme.js"
+>          ,javascript "nearbystops.js"
 >          ,footer
 >          ])
->      where geourl = "http://192.241.236.98/javascript/geofindme.js"
->            nearbyurl =  "http://192.241.236.98/javascript/nearbystops.js"
  
 This funtion begins to break the ResultSet into it's parts.  It calls
 getLocations, which takes a list of Maybe Arrivals, and a list of 
