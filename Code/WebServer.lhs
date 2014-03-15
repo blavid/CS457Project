@@ -82,7 +82,8 @@ takes it's argument and builds a ServerPartT by decorating it with
 HTTP headers, including a HTTP 200 code for "OK".
 
 > main :: IO ()
-> main = do simpleHTTP nullConf $ msum [  HS.dir "arrivalsPage" $ ok arrivalsMainPage
+> main = do simpleHTTP nullConf $ msum [
+>                                         HS.dir "arrivalsPage" $ ok arrivalsMainPage
 >                                       , HS.dir "arrivals" $ 
 >                                                      path $ 
 >                                                  \s -> ok $ arrivalsMatch s 
@@ -90,7 +91,8 @@ HTTP headers, including a HTTP 200 code for "OK".
 >                                       , HS.dir "stopsNearby" $
 >                                                      path $ 
 >                                                  \ll -> ok $ stopFinderMatch ll 
->--                                     , HS.dir "scripts" $ serveDirectory DisableBrowsing [] "./scripts"
+>                                       , HS.dir "index.html" $ ok homePage 
+>                                       , HS.seeOther ("index.html" :: String) "index.html"
 >                                      ]
  
 This function is used when the user requests the arrivals for one
