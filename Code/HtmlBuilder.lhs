@@ -37,7 +37,9 @@ throughout the rest of the module.
 >                            , textBox "Stop ID" "arrivalsText"
 >                            , htmlButton "Get Arrivals" "arrivalsButton"
 >                            , footer
->                            , arrivalsJS])
+>                            , javascript url
+>                            ])
+>               where url = "http://192.241.236.98/javascript/arrivals.js"
 
 
 The next functions are involved with generating a page listing of 

@@ -105,103 +105,17 @@ Our site doesn't use normal HTML form behavior.  Instead, this
 Javascript redefines the behavior of the button to redirect to
 a new URL, based on the information put into the arrivals box.
 
-> arrivalsJS :: Text
-> arrivalsJS =
->     dconcat $ Prelude.map (append "\n") [
->              "<script type='text/javascript'>"
->             ," document.getElementById('arrivalsButton').onclick = function () {"
->             ,"    location.href = 'http://192.241.236.98:8000/arrivals/' + "
->             ,"                     document.getElementById('arrivalsText').value + '/';"
->             ," };"
->             ,"</script>"
->             ]
- 
-> nearbyStopsJS :: Text
-> nearbyStopsJS  =  
->     dconcat $ Prelude.map (append "\n") [
->              "<script type='text/javascript'>"
->             ," document.getElementById('nearbyStopsButton').onclick = function () {"
->             ,"   var lat   = document.getElementById('latitudeText').value;"
->             ,"   var lon   = document.getElementById('longitudeText').value;"
->             ,"   var units = document.getElementsByName('units');"
->             ,"   var i;"
->             ,"   for (i=0;i<units.length;i++)"
->             ,"     {"
->             ,"     if (units[i].checked)"
->             ,"       {"
->             ,"       units = units[i].value;"
->             ,"       }"
->             ,"     }"
->             ,"   var radius = document.getElementById('radius').value;"
->             ,"   location.href = 'http://192.241.236.98:8000/stopsNearby/' + "
->             ,"                    lat + ',' + "
->             ,"                    lon + ',' + "
->             ,"                    units + ',' + "
->             ,"                    radius + '/';"
->             ," };"
->             ,"</script>"
->             ]
- 
-This javascript gets the geolocation coordinates of the user.
-
-> geolocationJS :: Text
-> geolocationJS = 
->     dconcat $ Prelude.map (append "\n") [
->              "<script type='text/javascript'>"
->             ," var options = "
->             ,"  {  enableHighAccuracy:true, timeout: 5000, maximumAge: 0}; "
->             ,"function success(pos) {"
->             ,"  var crd = pos.coords;"
->             ,"  /*CODEHERE*/ "
->             ,"}"
->             ,"function error(err) {"
->             ,"  console.warn('ERROR(' + err.code + '): ' + err.message); } "
->             ,"function getLocation() {"
->             ,"  navigator.geolocation.getCurrentPosition(success, error, options); }"
->             ,"function populateTextBoxes() {"
->             ,"  document.getElementById('latitudeText').value = position.coords.latitude;"
->             ,"  document.getElementById('longitudeText').value = position.coords.longitude;"
->             ,"}"
->             ,"</script>"
->             ]
-
-Javascript to run a script on page load
+> javascript :: Text -> Text
+> javascript url = dconcat 
+>                    [
+>                     "<script src='"
+>                    ,url
+>                    ,"'></script>"
+>                    ]
 
 > onLoadJS       :: Text -> Text
 > onLoadJS script = dconcat ["<script type='text/javascript'>\n  window.onload = ", script, ";\n</script>\n"]
 
-
-> geoFindMeJS :: Text
-> geoFindMeJS  = 
->     dconcat $ Prelude.map (append "\n") [
->          "<script type='text/javascript'>"
->          ,"function geoFindMe() {"
->          ,"  var output = document.getElementById(\"out\");"
->          ,"  if (!navigator.geolocation){"
->          ,"    output.innerHTML = \"<p>Geolocation is not supported by your browser</p>\";"
->          ,"    return;"
->          ,"  }"
->          ,"  function success(position) {"
->          ,"    var latitude  = position.coords.latitude;"
->          ,"    var longitude = position.coords.longitude;"
->          ,""
->          ,"    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';"
->          ,"    document.getElementById('latitudeText').value = latitude;"
->          ,"    document.getElementById('longitudeText').value = longitude;"
->          ,""
->          ,"    var img = new Image();"
->          ,"    img.src = \"http://maps.googleapis.com/maps/api/staticmap?center=\" + latitude + \",\" + longitude + \"&zoom=15&size=500x500&markers=color:blue%7Clabel:S%7C\" + latitude + \",\" + longitude + \"&sensor=false\";"
->          ,""
->          ,"    output.appendChild(img);"
->          ,"  }"
->          ,"  function error() {"
->          ,"    output.innerHTML = \"Unable to retrieve your location\";"
->          ,"  }"
->          ,"  output.innerHTML = \"<p>Locating...</p>\";"
->          ,"  navigator.geolocation.getCurrentPosition(success, error);"
->          ,"}"
->          ," </script>"
->          ]
 
 > showLocation :: Text
 > showLocation  = 
