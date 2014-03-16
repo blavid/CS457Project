@@ -81,7 +81,7 @@ function to take apart the ResuiltSet.
 > stopFinderFormInputTable = 
 >                basicTable (dconcat 
 >                 [
->                  tableRow (textBox "Long." "longitudeTex")
+>                  tableRow (textBox "Long." "longitudeText")
 >                 ,tableRow (textBox "Lat. " "latitudeText")
 >                 ,tableRow (textBox "Radius" "radius")
 >                 ,tableRow (radioButton "units" "feet" "feet" True)

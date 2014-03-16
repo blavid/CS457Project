@@ -173,10 +173,23 @@ a new URL, based on the information put into the arrivals box.
 
 > aboutText :: Text
 > aboutText  =
->  "<p>This is some text. \
->  \it contains many lines. \
->  \and spans multiple lines of \
->  \code</p>" 
+>  "<p>The Transit>>Tracker application is written in Haskell, a functional programming language. \
+>  \The project was born from a final project in the Function Programming course offered at Portland \
+>  \State University and taught by Mark Jones.</p>\
+>  \<p>The code was developed and runs on a cloud server (reference needed) with the necessary Haskell \
+>  \libraries installed. The environment looks like this:</P>\
+>  \<p><strong>Apache Web Server</strong>: The Apache web server is configured to serve up the static \
+>  \portions of the applications such as images, javascript files, and cascading style sheets. It is \
+>  \ not used for the dynamic presentation of the data.</p>\
+>  \<p><strong>Trimet RESTful API</strong>: <a href='http://develolper.trimet.org'>Trimet</a> \
+>  \(the local public transit system) maintains a database of all transit routes, stops, \
+>  \arrival times, etc. for their entire fleet of vehicles. They offer a public API for \
+>  \accessing this data. Data is provided in either XML or JSON format. This application \
+>  \uses JSON exclusively.</p>\
+>  \<p><strong>Haskell</strong>: A functional programming language. Source code is developed \
+>  \and compiled on the server.</p> \
+>  \<p><strong>Happstack Haskell Library</strong>: A full-blown web server library for Haskell.</p>\
+>  \<p><strong>Aeson Haskell Library</strong>: A Haskell library for parsing JSON data.</p>"
 
 Testing:
 No formal testing done for HtmlStrings, as it was felt that using the
