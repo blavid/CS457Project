@@ -89,7 +89,7 @@ Generic function to build a link.
 The next few functions are used to build a static google maps link.
 
 > googleMapsBaseLink :: Text
-> googleMapsBaseLink = "http://maps.googleapis.com/maps/api/staticmap?zoom=14&size=400x400&sensor=false&"
+> googleMapsBaseLink = "http://maps.googleapis.com/maps/api/staticmap?&size=400x400&sensor=false&"
 
 > googleMapsCenter :: Text -> Text
 > googleMapsCenter center = dconcat ["center=", center]
@@ -115,7 +115,7 @@ a new URL, based on the information put into the arrivals box.
 > styleSheet    :: Text -> Text
 > styleSheet url = dconcat 
 >                    [
->                     "<link rel='stylesheet' href='http://192.241.236.98/css/"
+>                     "<link rel='stylesheet' href='http://transittracker.dnsdynamic.com/css/"
 >                    ,url
 >                    ,"' type='text/css' media='screen'>"
 >                    ]
@@ -123,7 +123,7 @@ a new URL, based on the information put into the arrivals box.
 > javascript    :: Text -> Text
 > javascript url = dconcat 
 >                    [
->                     "<script src='http://192.241.236.98/javascript/"
+>                     "<script src='http://transittracker.dnsdynamic.com/javascript/"
 >                    ,url
 >                    ,"'></script>"
 >                    ]
@@ -146,7 +146,7 @@ a new URL, based on the information put into the arrivals box.
 > header        :: Text -> Text
 > header caption = 
 >    dconcat $ Prelude.map (append "\n") [
->       "<a href='/'><img src='http://192.241.236.98/images/header.jpg'></a>"
+>       "<a href='/'><img src='http://transittracker.dnsdynamic.com/images/header.jpg'></a>"
 >      ,styleSheet "lavalamp_test.css"
 >      ,javascript "jquery-1.1.3.1.min.js"
 >      ,javascript "jquery.easing.min.js"
